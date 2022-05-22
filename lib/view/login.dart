@@ -26,14 +26,19 @@ class _LoginState extends State<Login> {
   Future<String> _getLogin(valueuser, valuepwd) async {
     final response = await http.post(
       Uri.parse("https://myproyecto.com/organizapp-api/LoginController/login"),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
       body: {
         "username": valueuser,
         "pwd": valuepwd,
       },
+      encoding: Encoding.getByName("utf-8"),
     );
     Map<String, dynamic> datajson = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      print(datajson["response"]["msg"]);
+      print(datajson["response"][0]["msg"]);
     } else {
       throw Exception("Fallo la conexion");
     }
