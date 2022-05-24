@@ -113,7 +113,11 @@ class _DrawerMState extends State<DrawerM> {
                       title: Text('Serrar Secion'),
                       leading: Icon(Icons.exit_to_app,
                           color: Color.fromRGBO(41, 141, 121, 1)),
-                      onLongPress: () {},
+                      onTap: () {
+                        Navigator.restorablePushReplacementNamed(
+                            context, "login");
+                        // Navigator.pushReplacementNamed(context, "actividades");
+                      },
                     )
                   ],
                 )),

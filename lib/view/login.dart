@@ -38,7 +38,38 @@ class _LoginState extends State<Login> {
     );
     Map<String, dynamic> datajson = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      print(datajson["response"][0]["msg"]);
+      final res = datajson["response"][0]["type"];
+      if (res == "success")
+        Navigator.pushReplacementNamed(context, "DrawerM");
+      else {
+        String msg = datajson["response"][0]["msg"];
+        showDialog(
+            context: context,
+            builder: (buildcontext) {
+              return AlertDialog(
+                backgroundColor: Color.fromRGBO(232, 245, 251, 1),
+                title: Text(
+                  "Digite nuevamente sus datos",
+                  style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+                ),
+                content: Text(msg, style: TextStyle(color: Colors.red)),
+                actions: <Widget>[
+                  RaisedButton(
+                    color: Color.fromRGBO(41, 141, 122, 1),
+                    child: Text(
+                      "CERRAR",
+                      style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+      // print(datajson["response"][0]["msg"]);
+      // print(datajson["response"][0]["msg"]);
     } else {
       throw Exception("Fallo la conexion");
     }
@@ -54,6 +85,7 @@ class _LoginState extends State<Login> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+          backgroundColor: Colors.red,
           centerTitle: true,
           title: Text(
             'OrganizApp',
@@ -188,6 +220,8 @@ class _LoginState extends State<Login> {
     // print(valuepasword);
   }
 }
+
+
 
 
 // List<Widget> listado(List<dynamic> info) {
