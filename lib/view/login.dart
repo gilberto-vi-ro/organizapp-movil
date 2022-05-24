@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organizapp/model/model_login.dart';
 import 'package:organizapp/view/registrar.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({Key key}) : super(key: key);
@@ -11,21 +12,33 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  //en esta parte traemos la iformacion
-  String username = "admin";
-  String pwd = "admin";
+  // variable para contolar el formulario
+  final formKey = GlobalKey<FormState>();
+  // variables para validar los texformfield
+  String valueusuario = "1";
+  String valuepasword = "2";
+
+  // en esta parte traemos la iformacion
+
+  // String username = "admin";
+  // String pwd = "admin";
   // Future<List> _listadoLogin;
-  Future<String> _getLogin() async {
+  Future<String> _getLogin(valueuser, valuepwd) async {
     final response = await http.post(
-      Uri.parse(
-          "https://myproyecto.com/organizapp-api/HomeController/listFolder/"),
-      body: {
-        "id_user": "1001",
-        "path": "drive/1001/",
+      Uri.parse("https://myproyecto.com/organizapp-api/LoginController/login"),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
       },
+      body: {
+        "username": valueuser,
+        "pwd": valuepwd,
+      },
+      encoding: Encoding.getByName("utf-8"),
     );
+    Map<String, dynamic> datajson = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      print(response.body);
+      print(datajson["response"][0]["msg"]);
     } else {
       throw Exception("Fallo la conexion");
     }
@@ -34,7 +47,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _getLogin();
   }
 
   @override
@@ -71,78 +83,94 @@ class _LoginState extends State<Login> {
             ),
             // ponemos el singleChilScrolViu para que escrolee el login
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 10.0),
-                          icon: Icon(
-                            Icons.person,
-                            color: Color.fromRGBO(41, 141, 122, 1),
-                          ),
-                          hintText: 'Usuario',
-                          labelText: 'Usuario'),
-                      onChanged: (value) {},
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                      child: TextFormField(
+                        onChanged: (value) =>
+                            this.valueusuario = value.toString(),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10.0),
+                            icon: Icon(
+                              Icons.person,
+                              color: Color.fromRGBO(41, 141, 122, 1),
+                            ),
+                            hintText: 'Usuario',
+                            labelText: 'Usuario'),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return "introduce un usuario valido";
+                          else
+                            return null;
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 10.0),
-                          icon: Icon(
-                            Icons.lock,
-                            color: Color.fromRGBO(41, 141, 121, 1),
-                          ),
-                          hintText: 'Contraseña',
-                          labelText: 'Contraseña'),
-                      onChanged: (value) {},
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                      child: TextFormField(
+                        onChanged: (value) =>
+                            this.valuepasword = value.toString(),
+                        keyboardType: TextInputType.emailAddress,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10.0),
+                            icon: Icon(
+                              Icons.lock,
+                              color: Color.fromRGBO(41, 141, 121, 1),
+                            ),
+                            hintText: 'Contraseña',
+                            labelText: 'Contraseña'),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return "introduce un password valido";
+                          else
+                            return null;
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    child: RaisedButton(
-                        color: Color.fromRGBO(41, 141, 122, 1),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 80.0, vertical: 15.0),
-                          child: Text(
-                            'Acceder',
-                            style: TextStyle(
-                                color: Color.fromRGBO(232, 245, 251, 1)),
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        onLongPress: () {
-                          Text('hola mundo');
-                        }),
-                  ),
-                  // boton de registrar
-                  Container(
-                    child: MaterialButton(
-                      child: Container(child: Text('Registrate aqui!')),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => registrar()),
-                        );
-                      },
+                    SizedBox(
+                      height: 20.0,
                     ),
-                  )
-                ],
+                    Container(
+                      child: RaisedButton(
+                          color: Color.fromRGBO(41, 141, 122, 1),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 80.0, vertical: 15.0),
+                            child: Text(
+                              'Acceder',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(232, 245, 251, 1)),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          onPressed: () => _submit()),
+                    ),
+                    // boton de registrar
+                    Container(
+                      child: MaterialButton(
+                        child: Container(child: Text('Registrate aqui!')),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => registrar()),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],
@@ -150,7 +178,17 @@ class _LoginState extends State<Login> {
       ),
     ));
   }
+
+  _submit() {
+    if (formKey.currentState.validate())
+      _getLogin(valueusuario, valuepasword);
+    else
+      return;
+    // print(valueusuario);
+    // print(valuepasword);
+  }
 }
+
 
 // List<Widget> listado(List<dynamic> info) {
 //   List<Widget> lista = [];
