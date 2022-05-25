@@ -146,7 +146,6 @@ class _EntregadoTabState extends State<EntregadoTab> {
             )
           ],
         ),
-        
       ),
     );
   }

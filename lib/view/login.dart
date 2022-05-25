@@ -15,9 +15,8 @@ class _LoginState extends State<Login> {
   // variable para contolar el formulario
   final formKey = GlobalKey<FormState>();
   // variables para validar los texformfield
-  String valueusuario = "1";
-  String valuepasword = "2";
-
+  String valueusuario = "";
+  String valuepasword = "";
   // en esta parte traemos la iformacion
 
   // String username = "admin";
