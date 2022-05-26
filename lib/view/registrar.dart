@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,6 +23,9 @@ class _registrarState extends State<registrar> {
   final formKeyRegistro = GlobalKey<FormState>();
   // ----------------------------------------------
   Future<String> _getRegistrar(username, nombre_c, pwd) async {
+    if (verifyConn() == 1) {
+    } else
+      return "";
     final response = await http.post(
       Uri.parse(
           "https://myproyecto.com/organizapp-api/LoginController/registerUser"),
@@ -35,42 +40,20 @@ class _registrarState extends State<registrar> {
       },
       encoding: Encoding.getByName("utf-8"),
     );
-    Map<String, dynamic> datajson = jsonDecode(response.body.toString());
+
     if (response.statusCode == 200) {
+      Map<String, dynamic> datajson = jsonDecode(response.body.toString());
       final res = datajson["response"][0]["type"];
       if (res == "success")
-        Navigator.pushReplacementNamed(context, "login");
+        myShowDialog("Exitoso", "Usuario registrado");
       else {
         String msg = datajson["response"][0]["msg"];
-        showDialog(
-            context: context,
-            builder: (buildcontext) {
-              return AlertDialog(
-                backgroundColor: Color.fromRGBO(232, 245, 251, 1),
-                title: Text(
-                  "Digite nuevamente sus datos",
-                  style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
-                ),
-                content: Text(msg, style: TextStyle(color: Colors.red)),
-                actions: <Widget>[
-                  RaisedButton(
-                    color: Color.fromRGBO(41, 141, 122, 1),
-                    child: Text(
-                      "CERRAR",
-                      style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+        myShowDialog("Digite nuevamente sus datos", msg);
       }
       // print(datajson["response"][0]["msg"]);
       // print(datajson["response"][0]["msg"]);
     } else {
-      throw Exception("Fallo la conexion");
+      myShowDialog("Error", "no hay conexion a internet");
     }
   }
 
@@ -250,35 +233,51 @@ class _registrarState extends State<registrar> {
       if (value_password == value_confPassword)
         _getRegistrar(value_name, value_user, value_password);
       else {
-        showDialog(
-            context: context,
-            builder: (buildcontext) {
-              return AlertDialog(
-                backgroundColor: Color.fromRGBO(232, 245, 251, 1),
-                title: Text(
-                  "Digite nuevamente sus datos",
-                  style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
-                ),
-                content: Text("Las contraseñas no considen",
-                    style: TextStyle(color: Colors.red)),
-                actions: <Widget>[
-                  RaisedButton(
-                    color: Color.fromRGBO(41, 141, 122, 1),
-                    child: Text(
-                      "CERRAR",
-                      style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+        myShowDialog(
+            "Digite nuevamente sus datos", "Las contraseñas no considen");
       }
     } else
       return;
     // print(valueusuario);
     // print(valuepasword);
+  }
+
+  myShowDialog(msTitle, msContent) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            backgroundColor: Color.fromRGBO(232, 245, 251, 1),
+            title: Text(
+              msTitle,
+              style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+            ),
+            content: Text(msContent, style: TextStyle(color: Colors.red)),
+            actions: <Widget>[
+              RaisedButton(
+                color: Color.fromRGBO(41, 141, 122, 1),
+                child: Text(
+                  "CERRAR",
+                  style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  verifyConn() async {
+    try {
+      await Firestore.instance
+          .runTransaction((Transaction tx) {})
+          .timeout(Duration(seconds: 5));
+      return 1;
+    } on SocketException catch (e) {
+      myShowDialog("Error", e);
+      return 0;
+    }
   }
 }
