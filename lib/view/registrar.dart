@@ -23,37 +23,38 @@ class _registrarState extends State<registrar> {
   final formKeyRegistro = GlobalKey<FormState>();
   // ----------------------------------------------
   Future<String> _getRegistrar(username, nombre_c, pwd) async {
-    if (verifyConn() == 1) {
-    } else
-      return "";
-    final response = await http.post(
-      Uri.parse(
-          "https://myproyecto.com/organizapp-api/LoginController/registerUser"),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: {
-        "username": username,
-        "nombre_c": nombre_c,
-        "pwd": nombre_c,
-      },
-      encoding: Encoding.getByName("utf-8"),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse(
+            "https://myproyecto.com/organizapp-api/LoginController/registerUser"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: {
+          "username": username,
+          "nombre_c": nombre_c,
+          "pwd": pwd,
+        },
+        encoding: Encoding.getByName("utf-8"),
+      );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> datajson = jsonDecode(response.body.toString());
-      final res = datajson["response"][0]["type"];
-      if (res == "success")
-        myShowDialog("Exitoso", "Usuario registrado");
-      else {
-        String msg = datajson["response"][0]["msg"];
-        myShowDialog("Digite nuevamente sus datos", msg);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> datajson = jsonDecode(response.body.toString());
+        final res = datajson["response"][0]["type"];
+        if (res == "success")
+          myShowDialog("Exitoso", "Usuario registrado");
+        else {
+          String msg = datajson["response"][0]["msg"];
+          myShowDialog("Digite nuevamente sus datos", msg);
+        }
+        // print(datajson["response"][0]["msg"]);
+        // print(datajson["response"][0]["msg"]);
+      } else {
+        myShowDialog("Error", "Ocurrio un error.");
       }
-      // print(datajson["response"][0]["msg"]);
-      // print(datajson["response"][0]["msg"]);
-    } else {
-      myShowDialog("Error", "no hay conexion a internet");
+    } catch (e) {
+      myShowDialog("Error", "No hay conexion a internet.");
     }
   }
 
@@ -269,15 +270,21 @@ class _registrarState extends State<registrar> {
         });
   }
 
-  verifyConn() async {
-    try {
-      await Firestore.instance
-          .runTransaction((Transaction tx) {})
-          .timeout(Duration(seconds: 5));
-      return 1;
-    } on SocketException catch (e) {
-      myShowDialog("Error", e);
-      return 0;
-    }
+  httpGet() async {
+    // try {
+    //   var url =
+    //       Uri.https('www.googleapis.com', '/books/v1/volumes', {'q_': 'hola'});
+    //   var response = await http.get(url);
+    //   // if (response.statusCode == 200) {
+    //   //   myShowDialog("Error", '${response.statusCode}.');
+    //   // } else {
+    //   //   myShowDialog(
+    //   //       "Error", 'Request failed with status: ${response.statusCode}.');
+    //   // }
+    //   return 1;
+    // } catch (e) {
+    //   myShowDialog("Error", "No hay conexion a internet.");
+    //   return 0;
+    // }
   }
 }
