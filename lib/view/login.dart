@@ -212,7 +212,8 @@ class _LoginState extends State<Login> {
 
   _submit() {
     if (formKey.currentState.validate())
-      _getLogin(valueusuario, valuepasword);
+      // _getLogin(valueusuario, valuepasword);
+      Navigator.pushReplacementNamed(context, "DrawerM");
     else
       return;
     // print(valueusuario);

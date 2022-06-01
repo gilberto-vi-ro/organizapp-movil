@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:organizapp/view/editarPerfil.dart';
-import 'agregarBar.dart';
-import 'editarBar.dart';
-import 'entregadoTab.dart';
-import 'inicioTabs.dart';
-import 'listoTab.dart';
+import 'include/agregarBar.dart';
+import 'include/editarBar.dart';
+import 'include/entregadoTab.dart';
+import 'include/inicioTabs.dart';
+import 'include/listoTab.dart';
 
 class DrawerM extends StatefulWidget {
   DrawerM({Key key}) : super(key: key);
@@ -17,11 +17,23 @@ class DrawerM extends StatefulWidget {
 class _DrawerMState extends State<DrawerM> {
   // array de los tabBart
   // ---------------------------------------------
-  final Tabs = TabBarView(children: <Widget>[
+  final titleTabs = <Widget>[
+    Tab(
+      text: "Pendiente",
+    ),
+    Tab(
+      text: "Listo",
+    ),
+    Tab(
+      text: "Entregado",
+    )
+  ];
+
+  final containerTabs = <Widget>[
     new InicioTabs(),
     new ListoTab(),
     new EntregadoTab(),
-  ]);
+  ];
 
   final m = PaginaAgregarBar();
   int _paginaActual = 0;
@@ -136,28 +148,30 @@ class _DrawerMState extends State<DrawerM> {
                   251,
                   1,
                 ))),
-            bottom: new TabBar(
-                unselectedLabelColor: Color.fromRGBO(59, 56, 56, 1),
-                indicatorColor: Color.fromRGBO(41, 141, 122, 1),
-                tabs: <Widget>[
-                  new Tab(
-                    // icon: new Icon(Icons.home),
-                    text: 'Pendiente',
-
-                    // color: red,
-                  ),
-                  new Tab(
-                    // icon: new Icon(Icons.person),
-                    text: 'Listo',
-                  ),
-                  new Tab(
-                    // icon: new Icon(Icons.book),
-                    text: 'Entregado',
-                  ),
-                ]),
           ),
 
-          body: Tabs,
+          body: Column(
+            // Column
+            children: <Widget>[
+              Container(
+                color: Color.fromRGBO(219, 220, 222, 1), // Tab Bar color change
+                child: TabBar(
+                  // TabBar
+                  //controller: tabController,
+                  unselectedLabelColor: Color.fromRGBO(59, 56, 56, 1),
+                  labelColor: Color.fromRGBO(41, 141, 122, 1),
+                  indicatorWeight: 4,
+                  indicatorColor: Color.fromRGBO(41, 141, 122, 1),
+                  tabs: titleTabs,
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: containerTabs,
+                ),
+              ),
+            ],
+          ),
 
           // body: _paginas[_paginaActual],
 

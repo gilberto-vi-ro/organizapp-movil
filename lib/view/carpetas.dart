@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:organizapp/view/DrawerM.dart';
 import 'package:organizapp/view/carp1.dart';
 
-import 'agregarBar.dart';
-import 'editarBar.dart';
+import 'include/agregarBar.dart';
+import 'include/editarBar.dart';
 
 class Carpetas extends StatefulWidget {
   const Carpetas({Key key}) : super(key: key);
