@@ -4,6 +4,8 @@ import 'package:organizapp/view/carp1.dart';
 
 import 'include/agregarBar.dart';
 import 'include/editarBar.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Carpetas extends StatefulWidget {
   const Carpetas({Key key}) : super(key: key);
@@ -20,6 +22,73 @@ class _CarpetasState extends State<Carpetas> {
 //   int _paginaActual = 0;
 
 //   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
+
+List<Widget> listApi = <Widget>[];
+
+
+@override
+void initState() {
+  // super.initState();
+  _listFolder("1001", "drive/1001");
+}
+Future<String> _listFolder(value_id_user, value_pathname) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            "https://myproyecto.com/organizapp-api/FolderController/listAll/"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: {
+          "id_user": value_id_user,
+          "pathname": value_pathname,
+         
+        },
+        encoding: Encoding.getByName("utf-8"),
+      );
+  
+      if (response.statusCode == 200) {
+        Map<String, dynamic> datajson = jsonDecode(response.body.toString());
+         
+        final res = datajson["type"];
+        if (res == "success"){
+              // myShowDialog("Exitoso", "Usuario registrado");
+               print(datajson["data"]);
+               listApi = <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: const Text("He'd have you all unravel at the"),
+                    color: Colors.teal[100],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: const Text("He'd have you all unravel at the"),
+                    color: Colors.teal[100],
+                  ),
+                ];
+        }
+        else {
+          String msg = datajson["data"]["msg"];
+          myShowDialog("error", msg);
+        }
+
+
+        // print(datajson["response"][0]["msg"]);
+        // print(datajson["response"][0]["msg"]);
+      } else {
+        myShowDialog("Error", "Ocurrio un error.");
+      }
+    } catch (e) {
+      
+      if (e.toString()=="XMLHttpRequest error.")
+         myShowDialog("Error","No hay conexion a internet");
+      else
+        myShowDialog("Error", e.toString());
+      
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,68 +232,7 @@ class _CarpetasState extends State<Carpetas> {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 10,
                 crossAxisCount: 2,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text("He'd have you all unravel at the"),
-                    color: Colors.teal[100],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Heed not the rabble'),
-                    color: Colors.teal[200],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Sound of screams but the'),
-                    color: Colors.teal[300],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Who scream'),
-                    color: Colors.teal[400],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution is coming...'),
-                    color: Colors.teal[500],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                ],
+                children: listApi,
               ),
             ),
             Container(
@@ -312,5 +320,33 @@ class _CarpetasState extends State<Carpetas> {
       //   ],
       // ),
     );
+
+  }
+
+  myShowDialog(msTitle, msContent) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            backgroundColor: Color.fromRGBO(232, 245, 251, 1),
+            title: Text(
+              msTitle,
+              style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+            ),
+            content: Text(msContent, style: TextStyle(color: Colors.red)),
+            actions: <Widget>[
+              RaisedButton(
+                color: Color.fromRGBO(41, 141, 122, 1),
+                child: Text(
+                  "CERRAR",
+                  style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 }
