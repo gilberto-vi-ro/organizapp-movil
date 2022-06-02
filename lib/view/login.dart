@@ -23,54 +23,36 @@ class _LoginState extends State<Login> {
   // String pwd = "admin";
   // Future<List> _listadoLogin;
   Future<String> _getLogin(valueuser, valuepwd) async {
-    final response = await http.post(
-      Uri.parse("https://myproyecto.com/organizapp-api/LoginController/login"),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: {
-        "username": valueuser,
-        "pwd": valuepwd,
-      },
-      encoding: Encoding.getByName("utf-8"),
-    );
-    Map<String, dynamic> datajson = jsonDecode(response.body.toString());
-    if (response.statusCode == 200) {
-      final res = datajson["response"][0]["type"];
-      if (res == "success")
-        Navigator.pushReplacementNamed(context, "DrawerM");
-      else {
-        String msg = datajson["response"][0]["msg"];
-        showDialog(
-            context: context,
-            builder: (buildcontext) {
-              return AlertDialog(
-                backgroundColor: Color.fromRGBO(232, 245, 251, 1),
-                title: Text(
-                  "Digite nuevamente sus datos",
-                  style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
-                ),
-                content: Text(msg, style: TextStyle(color: Colors.red)),
-                actions: <Widget>[
-                  RaisedButton(
-                    color: Color.fromRGBO(41, 141, 122, 1),
-                    child: Text(
-                      "CERRAR",
-                      style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+    try {
+      final response = await http.post(
+        Uri.parse(
+            "https://myproyecto.com/organizapp-api/LoginController/login"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: {
+          "username": valueuser,
+          "pwd": valuepwd,
+        },
+        encoding: Encoding.getByName("utf-8"),
+      );
+      Map<String, dynamic> datajson = jsonDecode(response.body.toString());
+      if (response.statusCode == 200) {
+        final res = datajson["response"][0]["type"];
+        if (res == "success")
+          Navigator.pushReplacementNamed(context, "DrawerM");
+        else {
+          String msg = datajson["response"][0]["msg"];
+          myShowDialog("Digite nuevamente sus datos", msg);
+        }
+        // print(datajson["response"][0]["msg"]);
+        // print(datajson["response"][0]["msg"]);
+      } else {
+        myShowDialog("Error", "Ocurrio un error.");
       }
-      // print(datajson["response"][0]["msg"]);
-      // print(datajson["response"][0]["msg"]);
-    } else {
-      throw Exception("Fallo la conexion");
+    } catch (e) {
+      myShowDialog("Error", "No hay conexion a internet.");
     }
   }
 
@@ -212,14 +194,44 @@ class _LoginState extends State<Login> {
 
   _submit() {
     if (formKey.currentState.validate())
-      // _getLogin(valueusuario, valuepasword);
-      Navigator.pushReplacementNamed(context, "DrawerM");
+      _getLogin(valueusuario, valuepasword);
+    // Navigator.pushReplacementNamed(context, "DrawerM");
     else
       return;
     // print(valueusuario);
     // print(valuepasword);
   }
+
+  // hacemos el megtodo myShowDialog para los alert el medodo
+  myShowDialog(msTitle, msContent) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            backgroundColor: Color.fromRGBO(232, 245, 251, 1),
+            title: Text(
+              msTitle,
+              style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+            ),
+            content: Text(msContent, style: TextStyle(color: Colors.red)),
+            actions: <Widget>[
+              RaisedButton(
+                color: Color.fromRGBO(41, 141, 122, 1),
+                child: Text(
+                  "CERRAR",
+                  style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
 }
+
+
 
 
 

@@ -137,7 +137,6 @@ class _registrarState extends State<registrar> {
         child: TextFormField(
           onChanged: (value) => this.value_user = value.toString(),
           keyboardType: TextInputType.emailAddress,
-          obscureText: true,
           decoration: InputDecoration(
               icon: Icon(
                 Icons.person,
