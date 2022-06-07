@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:organizapp/view/DrawerM.dart';
 import 'package:organizapp/view/carp1.dart';
+import 'package:organizapp/model/CarpetaModel.dart';
+import 'package:organizapp/provider/carpeta_provider.dart';
 
 import 'include/agregarBar.dart';
 import 'include/editarBar.dart';
@@ -24,11 +26,12 @@ class _CarpetasState extends State<Carpetas> {
 
 //  lista de carpetas
 // ------------------------------------------
+
   List<Widget> listApi = <Widget>[];
+
   @override
   void initState() {
     // super.initState();
-    _listFolder("1001", "drive/1001");
   }
 
   Future<String> _listFolder(value_id_user, value_pathname) async {
@@ -52,20 +55,20 @@ class _CarpetasState extends State<Carpetas> {
 
         final res = datajson["type"];
         if (res == "success") {
-          myShowDialog("Exitoso", "Usuario registrado");
-          print(datajson["data"]);
-          listApi = <Widget>[
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const Text("He'd have you all unravel at the"),
-              color: Colors.teal[100],
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const Text("He'd have you all unravel at the"),
-              color: Colors.teal[100],
-            ),
-          ];
+          // myShowDialog("Exitoso", datajson["data"][0]["name"]);
+          // print(datajson["data"]);
+          // listApi = <Widget>[
+          //   Container(
+          //     padding: const EdgeInsets.all(8),
+          //     child: const Text("He'd have you all unravel at the"),
+          //     color: Colors.teal[100],
+          //   ),
+          //   Container(
+          //     padding: const EdgeInsets.all(8),
+          //     child: const Text("He'd have you all unravel at the"),
+          //     color: Colors.teal[100],
+          //   ),
+          // ];
         } else {
           String msg = datajson["data"]["msg"];
           myShowDialog("error", msg);
@@ -226,7 +229,7 @@ class _CarpetasState extends State<Carpetas> {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 10,
                 crossAxisCount: 2,
-                children: listApi,
+                children: <Widget>[_listWidgetFolder("1001", "drive/1001")],
               ),
             ),
           ],
@@ -312,5 +315,50 @@ class _CarpetasState extends State<Carpetas> {
             ],
           );
         });
+  }
+
+  Widget _listWidgetFolder(value_id_user, value_pathname) {
+    return FutureBuilder(
+      future: CarpetaProvider.cargarCarpeta(value_id_user, value_pathname),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<CarpetaModel>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: const Text("He'd have you all unravel at the"),
+      color: Colors.teal[100],
+    );
+
+    // return Dismissible(
+    //   key: UniqueKey(),
+    //   background: Container(
+    //     color: Colors.redAccent,
+    //   ),
+    //   onDismissed: (dir) => carpetaProvider.eleminarAlumno(alumno.id),
+    //   child: ListTile(
+    //     leading: CircleAvatar(backgroundImage: _validarImagen(alumno)),
+    //     title: Text('${alumno.nombre} ${alumno.apellidos}'),
+    //     subtitle: Text(alumno.id),
+    //     trailing: Icon(Icons.keyboard_arrow_right),
+    //     onTap: () => Navigator.pushNamed(context, 'carpeta', arguments: carpeta)
+    //         .then((value) {
+    //       setState(() {});
+    //     }),
+    //   ),
+    // );
   }
 }
