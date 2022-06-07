@@ -54,7 +54,10 @@ class _registrarState extends State<registrar> {
         myShowDialog("Error", "Ocurrio un error.");
       }
     } catch (e) {
-      myShowDialog("Error", "No hay conexion a internet.");
+      if (e.toString() == "XMLHttpRequest error.")
+        myShowDialog("Error", "No hay conexion a internet");
+      else
+        myShowDialog("Error", e.toString());
     }
   }
 

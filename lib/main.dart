@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         'carpetas': (BuildContext context) => Carpetas(),
         'pruev': (BuildContext context) => MyAps(),
       },
-      initialRoute: 'login',
+      initialRoute: 'carpetas',
       theme: ThemeData(primaryColor: Color.fromRGBO(41, 141, 122, 1)),
     );
   }

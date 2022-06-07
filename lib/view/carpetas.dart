@@ -17,21 +17,21 @@ class Carpetas extends StatefulWidget {
 class _CarpetasState extends State<Carpetas> {
   // agregamos estas variable para que funcione la
   // barra inferior
-// final m = PaginaAgregarBar();
+  // ------------------------------------------------
+  final m = PaginaAgregarBar();
+  int _paginaActual = 0;
+  List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
 
-//   int _paginaActual = 0;
+//  lista de carpetas
+// ------------------------------------------
+  List<Widget> listApi = <Widget>[];
+  @override
+  void initState() {
+    // super.initState();
+    _listFolder("1001", "drive/1001");
+  }
 
-//   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
-
-List<Widget> listApi = <Widget>[];
-
-
-@override
-void initState() {
-  // super.initState();
-  _listFolder("1001", "drive/1001");
-}
-Future<String> _listFolder(value_id_user, value_pathname) async {
+  Future<String> _listFolder(value_id_user, value_pathname) async {
     try {
       final response = await http.post(
         Uri.parse(
@@ -43,36 +43,33 @@ Future<String> _listFolder(value_id_user, value_pathname) async {
         body: {
           "id_user": value_id_user,
           "pathname": value_pathname,
-         
         },
         encoding: Encoding.getByName("utf-8"),
       );
-  
+
       if (response.statusCode == 200) {
         Map<String, dynamic> datajson = jsonDecode(response.body.toString());
-         
+
         final res = datajson["type"];
-        if (res == "success"){
-              // myShowDialog("Exitoso", "Usuario registrado");
-               print(datajson["data"]);
-               listApi = <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text("He'd have you all unravel at the"),
-                    color: Colors.teal[100],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text("He'd have you all unravel at the"),
-                    color: Colors.teal[100],
-                  ),
-                ];
-        }
-        else {
+        if (res == "success") {
+          myShowDialog("Exitoso", "Usuario registrado");
+          print(datajson["data"]);
+          listApi = <Widget>[
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const Text("He'd have you all unravel at the"),
+              color: Colors.teal[100],
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const Text("He'd have you all unravel at the"),
+              color: Colors.teal[100],
+            ),
+          ];
+        } else {
           String msg = datajson["data"]["msg"];
           myShowDialog("error", msg);
         }
-
 
         // print(datajson["response"][0]["msg"]);
         // print(datajson["response"][0]["msg"]);
@@ -80,15 +77,12 @@ Future<String> _listFolder(value_id_user, value_pathname) async {
         myShowDialog("Error", "Ocurrio un error.");
       }
     } catch (e) {
-      
-      if (e.toString()=="XMLHttpRequest error.")
-         myShowDialog("Error","No hay conexion a internet");
+      if (e.toString() == "XMLHttpRequest error.")
+        myShowDialog("Error", "No hay conexion a internet");
       else
         myShowDialog("Error", e.toString());
-      
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -235,92 +229,62 @@ Future<String> _listFolder(value_id_user, value_pathname) async {
                 children: listApi,
               ),
             ),
-            Container(
-              height: 50,
-              color: Color.fromRGBO(59, 56, 56, 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      icon: Icon(Icons.home),
-                      color: Colors.white,
-                      onPressed: () {}),
-                  IconButton(
-                      icon: Icon(Icons.add_circle),
-                      color: Colors.white,
-                      onPressed: () {}),
-                  IconButton(
-                      icon: Icon(Icons.edit),
-                      color: Colors.white,
-                      onPressed: () {}),
-                  IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Colors.white,
-                      onPressed: () {}),
-                  IconButton(
-                      icon: Icon(Icons.loop_outlined),
-                      color: Colors.white,
-                      onPressed: () {}),
-                ],
-              ),
-            )
           ],
         ),
       ),
 
-      // ponemos la barra inferior
-      // -----------------------------
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   backgroundColor: Color.fromRGBO(59, 56, 56, 1),
-      //   // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-      //   selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
-      //   unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-      //   selectedIconTheme:
-      //       IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
-      //   onTap: (index) {
-      //     if (index == 3) {
-      //       print("hola mundo");
-      //     } else if (index == 4) {
-      //       print("hola mundo");
-      //     } else {
-      //       setState(() {
-      //         _paginaActual = index;
-      //       });
-      //     }
-      //   },
-      //   // ponemos la barrra de navegador de abajo
-      //   // el bottomnavigator------------------------
-      //   currentIndex: _paginaActual,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.picture_as_pdf_rounded,
-      //       ),
-      //       label: "Actividades",
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add_circle,
-      //       ),
-      //       label: "Agregar",
-      //     ),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.edit,
-      //         ),
-      //         label: "Editar"),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.delete,
-      //         ),
-      //         label: "Eliminar"),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.loop_outlined), label: "Cargar")
-      //   ],
-      // ),
+      // ponemos la barra inferior en archivo carpetas
+      // ------------------------------------------------
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Color.fromRGBO(59, 56, 56, 1),
+        // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+        selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
+        unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+        selectedIconTheme:
+            IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
+        onTap: (index) {
+          if (index == 3) {
+            print("hola mundo");
+          } else if (index == 4) {
+            print("hola mundo");
+          } else {
+            setState(() {
+              _paginaActual = index;
+            });
+          }
+        },
+        // ponemos la barrra de navegador de abajo
+        // el bottomnavigator------------------------
+        currentIndex: _paginaActual,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.picture_as_pdf_rounded,
+            ),
+            label: "Actividades",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle,
+            ),
+            label: "Agregar",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.edit,
+              ),
+              label: "Editar"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.delete,
+              ),
+              label: "Eliminar"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.loop_outlined), label: "Cargar")
+        ],
+      ),
     );
-
   }
 
   myShowDialog(msTitle, msContent) {
