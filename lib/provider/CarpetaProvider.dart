@@ -7,8 +7,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:organizapp/model/CarpetaModel.dart';
 
 class CarpetaProvider {
-  final String _urlDB =
-      'https://myesp8266-integradora-5bd80-default-rtdb.firebaseio.com/';
+  // final String _urlDB =
+  // 'https://myesp8266-integradora-5bd80-default-rtdb.firebaseio.com/';
 
   static Future<List<CarpetaModel>> cargarCarpeta(
       value_id_user, value_pathname) async {
@@ -31,13 +31,11 @@ class CarpetaProvider {
 
     final List<CarpetaModel> listaCarpetas = new List();
 
-    print(decodeData);
-    if (decodeData == null) return [];
+    if (decodeData["type"] != "success") return [];
 
-    decodeData.forEach((path_name, carpeta) {
-      final newCarpeta = CarpetaModel.fromJson(carpeta);
-      newCarpeta.path_name = carpeta.path_name;
-      newCarpeta.ctime = carpeta.ctime;
+    decodeData["data"].forEach((element) {
+      final newCarpeta = CarpetaModel.fromJson(element);
+      print(element["path_name"]);
       listaCarpetas.add(newCarpeta);
     });
 
