@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organizapp/view/DrawerM.dart';
 import 'package:organizapp/view/carp1.dart';
 import 'package:organizapp/model/CarpetaModel.dart';
-import 'package:organizapp/provider/carpeta_provider.dart';
+import 'package:organizapp/provider/carpetaProvider.dart';
 
 import 'include/agregarBar.dart';
 import 'include/editarBar.dart';
@@ -223,14 +223,15 @@ class _CarpetasState extends State<Carpetas> {
             // -------------------------------
             Container(
               height: 400,
-              child: GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(40),
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
-                children: <Widget>[_listWidgetFolder("1001", "drive/1001")],
-              ),
+              child: _listWidgetFolder("1002", "drive/1002"),
+              // child: GridView.count(
+              //   primary: false,
+              //   padding: const EdgeInsets.all(40),
+              //   crossAxisSpacing: 8,
+              //   mainAxisSpacing: 10,
+              //   crossAxisCount: 2,
+              //   children: _listWidgetFolder("1002", "drive/1002"),
+              // ),
             ),
           ],
         ),
@@ -317,13 +318,50 @@ class _CarpetasState extends State<Carpetas> {
         });
   }
 
-  Widget _listWidgetFolder(value_id_user, value_pathname) {
+  // Widget _listWidgetFolder(value_id_user, value_pathname) {
+  //   return FutureBuilder(
+  //     future: CarpetaProvider.cargarCarpeta(value_id_user, value_pathname),
+  //     builder:
+  //         (BuildContext context, AsyncSnapshot<List<CarpetaModel>> snapshot) {
+  //       if (snapshot.hasData) {
+  //         return ListView.builder(
+  //           itemCount: snapshot.data.length,
+  //           itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
+  //         );
+  //       } else {
+  //         return Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+  // Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(8),
+  //     child: const Text("He'd have you all unravel at the"),
+  //     color: Colors.teal[100],
+  //   );
+  FutureBuilder _listWidgetFolder(value_id_user, value_pathname) {
     return FutureBuilder(
       future: CarpetaProvider.cargarCarpeta(value_id_user, value_pathname),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<CarpetaModel>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
+          return GridView.builder(
+            //children: snapshot.data,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+
+              //primary: false,
+              //   padding: const EdgeInsets.all(40),
+              //   crossAxisSpacing: 8,
+              //   mainAxisSpacing: 10,
+              //   crossAxisCount: 2,
+            ),
             itemCount: snapshot.data.length,
             itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
           );
@@ -338,10 +376,18 @@ class _CarpetasState extends State<Carpetas> {
 
   Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
-      child: const Text("He'd have you all unravel at the"),
-      color: Colors.teal[100],
+      alignment: Alignment.center,
+      child: Text(carpeta.name),
+      decoration: BoxDecoration(
+          color: Colors.teal[100], borderRadius: BorderRadius.circular(15)),
     );
+    // Future<List<Widget>> _dataList(value_id_user, value_pathname) async{
+    //   List<CarpetaModel> list = CarpetaProvider.cargarCarpeta(value_id_user, value_pathname);
+    //   return list.map((m)=>ListTile(
+    //     title: m.path
+    //   )).ToList();
+
+    // }
 
     // return Dismissible(
     //   key: UniqueKey(),

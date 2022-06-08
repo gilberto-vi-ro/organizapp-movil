@@ -33,9 +33,9 @@ class CarpetaProvider {
 
     if (decodeData["type"] != "success") return [];
 
+    print(decodeData["data"]);
     decodeData["data"].forEach((element) {
       final newCarpeta = CarpetaModel.fromJson(element);
-      print(element["path_name"]);
       listaCarpetas.add(newCarpeta);
     });
 
