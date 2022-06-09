@@ -13,6 +13,8 @@ class CarpetaModel {
   String path;
   String path_name;
   bool is_dir;
+  int dirs;
+  int files;
   String extension;
   bool is_deleteable;
   bool is_readable;
@@ -27,6 +29,8 @@ class CarpetaModel {
     this.path,
     this.path_name,
     this.is_dir,
+    this.dirs,
+    this.files,
     this.extension,
     this.is_deleteable,
     this.is_readable,
@@ -41,7 +45,9 @@ class CarpetaModel {
         name: json["name"],
         path: json["path"],
         path_name: json["path_name"],
-        is_dir: json["is_dir"],
+        is_dir: json["info"]["is_dir"],
+        dirs: json["info"]["dirs"],
+        files: json["info"]["files"],
         extension: json["extension"],
         is_deleteable: json["is_deleteable"],
         is_readable: json["is_readable"],

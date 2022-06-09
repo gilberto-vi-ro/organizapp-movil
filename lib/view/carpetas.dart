@@ -222,7 +222,7 @@ class _CarpetasState extends State<Carpetas> {
             // nuestro Gridviw
             // -------------------------------
             Container(
-              height: 400,
+              height: 800,
               child: _listWidgetFolder("1002", "drive/1002"),
               // child: GridView.count(
               //   primary: false,
@@ -352,7 +352,7 @@ class _CarpetasState extends State<Carpetas> {
             padding: const EdgeInsets.all(10),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,
-              childAspectRatio: 3 / 2,
+              childAspectRatio: 2.5 / 3,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
 
@@ -375,36 +375,60 @@ class _CarpetasState extends State<Carpetas> {
   }
 
   Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(carpeta.name),
-      decoration: BoxDecoration(
-          color: Colors.teal[100], borderRadius: BorderRadius.circular(15)),
+    Icon myIcon = Icon(
+      Icons.folder,
     );
-    // Future<List<Widget>> _dataList(value_id_user, value_pathname) async{
-    //   List<CarpetaModel> list = CarpetaProvider.cargarCarpeta(value_id_user, value_pathname);
-    //   return list.map((m)=>ListTile(
-    //     title: m.path
-    //   )).ToList();
-
-    // }
-
-    // return Dismissible(
-    //   key: UniqueKey(),
-    //   background: Container(
-    //     color: Colors.redAccent,
-    //   ),
-    //   onDismissed: (dir) => carpetaProvider.eleminarAlumno(alumno.id),
-    //   child: ListTile(
-    //     leading: CircleAvatar(backgroundImage: _validarImagen(alumno)),
-    //     title: Text('${alumno.nombre} ${alumno.apellidos}'),
-    //     subtitle: Text(alumno.id),
-    //     trailing: Icon(Icons.keyboard_arrow_right),
-    //     onTap: () => Navigator.pushNamed(context, 'carpeta', arguments: carpeta)
-    //         .then((value) {
-    //       setState(() {});
-    //     }),
-    //   ),
-    // );
+    if (carpeta.is_dir) {
+    } else {
+      myIcon = Icon(
+        Icons.file_copy,
+      );
+    }
+    return Card(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        color: Color.fromRGBO(219, 220, 222, 1),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: IconButton(
+              alignment: Alignment.center,
+              color: Color.fromRGBO(59, 134, 232, 1),
+              iconSize: 80,
+              onPressed: () {},
+              icon: myIcon,
+            )),
+            Text(
+              carpeta.name,
+            ),
+          ],
+        ));
   }
+
+  // Future<List<Widget>> _dataList(value_id_user, value_pathname) async{
+  //   List<CarpetaModel> list = CarpetaProvider.cargarCarpeta(value_id_user, value_pathname);
+  //   return list.map((m)=>ListTile(
+  //     title: m.path
+  //   )).ToList();
+
+  // }
+
+  // return Dismissible(
+  //   key: UniqueKey(),
+  //   background: Container(
+  //     color: Colors.redAccent,
+  //   ),
+  //   onDismissed: (dir) => carpetaProvider.eleminarAlumno(alumno.id),
+  //   child: ListTile(
+  //     leading: CircleAvatar(backgroundImage: _validarImagen(alumno)),
+  //     title: Text('${alumno.nombre} ${alumno.apellidos}'),
+  //     subtitle: Text(alumno.id),
+  //     trailing: Icon(Icons.keyboard_arrow_right),
+  //     onTap: () => Navigator.pushNamed(context, 'carpeta', arguments: carpeta)
+  //         .then((value) {
+  //       setState(() {});
+  //     }),
+  //   ),
+  // );
+
 }
