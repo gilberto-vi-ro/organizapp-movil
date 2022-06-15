@@ -233,16 +233,3 @@ class _LoginState extends State<Login> {
         });
   }
 }
-
-
-
-
-
-
-// List<Widget> listado(List<dynamic> info) {
-//   List<Widget> lista = [];
-//   info.forEach((elemento) {
-//     lista.add(Text(elemento["name"]));
-//   });
-//   return lista;
-// }

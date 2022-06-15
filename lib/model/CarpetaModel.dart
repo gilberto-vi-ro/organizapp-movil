@@ -48,7 +48,7 @@ class CarpetaModel {
         is_dir: json["info"]["is_dir"],
         dirs: json["info"]["dirs"],
         files: json["info"]["files"],
-        extension: json["extension"],
+        extension: json["info"]["extension"],
         is_deleteable: json["is_deleteable"],
         is_readable: json["is_readable"],
         is_writable: json["is_writable"],

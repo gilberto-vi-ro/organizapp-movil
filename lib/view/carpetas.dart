@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:organizapp/view/DrawerM.dart';
 import 'package:organizapp/view/carp1.dart';
 import 'package:organizapp/model/CarpetaModel.dart';
@@ -26,66 +27,63 @@ class _CarpetasState extends State<Carpetas> {
 
 //  lista de carpetas
 // ------------------------------------------
-
   List<Widget> listApi = <Widget>[];
-
   @override
   void initState() {
     // super.initState();
   }
+  // Future<String> _listFolder(value_id_user, value_pathname) async {
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(
+  //           "https://myproyecto.com/organizapp-api/FolderController/listAll/"),
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Content-Type": "application/x-www-form-urlencoded"
+  //       },
+  //       body: {
+  //         "id_user": value_id_user,
+  //         "pathname": value_pathname,
+  //       },
+  //       encoding: Encoding.getByName("utf-8"),
+  //     );
 
-  Future<String> _listFolder(value_id_user, value_pathname) async {
-    try {
-      final response = await http.post(
-        Uri.parse(
-            "https://myproyecto.com/organizapp-api/FolderController/listAll/"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: {
-          "id_user": value_id_user,
-          "pathname": value_pathname,
-        },
-        encoding: Encoding.getByName("utf-8"),
-      );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> datajson = jsonDecode(response.body.toString());
 
-      if (response.statusCode == 200) {
-        Map<String, dynamic> datajson = jsonDecode(response.body.toString());
+  //       final res = datajson["type"];
+  //       if (res == "success") {
+  //         // myShowDialog("Exitoso", datajson["data"][0]["name"]);
+  //         // print(datajson["data"]);
+  //         // listApi = <Widget>[
+  //         //   Container(
+  //         //     padding: const EdgeInsets.all(8),
+  //         //     child: const Text("He'd have you all unravel at the"),
+  //         //     color: Colors.teal[100],
+  //         //   ),
+  //         //   Container(
+  //         //     padding: const EdgeInsets.all(8),
+  //         //     child: const Text("He'd have you all unravel at the"),
+  //         //     color: Colors.teal[100],
+  //         //   ),
+  //         // ];
+  //       } else {
+  //         String msg = datajson["data"]["msg"];
+  //         myShowDialog("error", msg);
+  //       }
 
-        final res = datajson["type"];
-        if (res == "success") {
-          // myShowDialog("Exitoso", datajson["data"][0]["name"]);
-          // print(datajson["data"]);
-          // listApi = <Widget>[
-          //   Container(
-          //     padding: const EdgeInsets.all(8),
-          //     child: const Text("He'd have you all unravel at the"),
-          //     color: Colors.teal[100],
-          //   ),
-          //   Container(
-          //     padding: const EdgeInsets.all(8),
-          //     child: const Text("He'd have you all unravel at the"),
-          //     color: Colors.teal[100],
-          //   ),
-          // ];
-        } else {
-          String msg = datajson["data"]["msg"];
-          myShowDialog("error", msg);
-        }
-
-        // print(datajson["response"][0]["msg"]);
-        // print(datajson["response"][0]["msg"]);
-      } else {
-        myShowDialog("Error", "Ocurrio un error.");
-      }
-    } catch (e) {
-      if (e.toString() == "XMLHttpRequest error.")
-        myShowDialog("Error", "No hay conexion a internet");
-      else
-        myShowDialog("Error", e.toString());
-    }
-  }
+  //       // print(datajson["response"][0]["msg"]);
+  //       // print(datajson["response"][0]["msg"]);
+  //     } else {
+  //       myShowDialog("Error", "Ocurrio un error.");
+  //     }
+  //   } catch (e) {
+  //     if (e.toString() == "XMLHttpRequest error.")
+  //       myShowDialog("Error", "No hay conexion a internet");
+  //     else
+  //       myShowDialog("Error", e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -224,14 +222,6 @@ class _CarpetasState extends State<Carpetas> {
             Container(
               height: 800,
               child: _listWidgetFolder("1002", "drive/1002"),
-              // child: GridView.count(
-              //   primary: false,
-              //   padding: const EdgeInsets.all(40),
-              //   crossAxisSpacing: 8,
-              //   mainAxisSpacing: 10,
-              //   crossAxisCount: 2,
-              //   children: _listWidgetFolder("1002", "drive/1002"),
-              // ),
             ),
           ],
         ),
@@ -318,30 +308,6 @@ class _CarpetasState extends State<Carpetas> {
         });
   }
 
-  // Widget _listWidgetFolder(value_id_user, value_pathname) {
-  //   return FutureBuilder(
-  //     future: CarpetaProvider.cargarCarpeta(value_id_user, value_pathname),
-  //     builder:
-  //         (BuildContext context, AsyncSnapshot<List<CarpetaModel>> snapshot) {
-  //       if (snapshot.hasData) {
-  //         return ListView.builder(
-  //           itemCount: snapshot.data.length,
-  //           itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
-  //         );
-  //       } else {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
-  // Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
-  //   return Container(
-  //     padding: const EdgeInsets.all(8),
-  //     child: const Text("He'd have you all unravel at the"),
-  //     color: Colors.teal[100],
-  //   );
   FutureBuilder _listWidgetFolder(value_id_user, value_pathname) {
     return FutureBuilder(
       future: CarpetaProvider.cargarCarpeta(value_id_user, value_pathname),
@@ -355,12 +321,6 @@ class _CarpetasState extends State<Carpetas> {
               childAspectRatio: 2.5 / 3,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-
-              //primary: false,
-              //   padding: const EdgeInsets.all(40),
-              //   crossAxisSpacing: 8,
-              //   mainAxisSpacing: 10,
-              //   crossAxisCount: 2,
             ),
             itemCount: snapshot.data.length,
             itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
@@ -380,22 +340,44 @@ class _CarpetasState extends State<Carpetas> {
     );
     if (carpeta.is_dir) {
     } else {
-      myIcon = Icon(
-        Icons.file_copy,
-      );
+      if (carpeta.extension == "pdf") {
+        myIcon = Icon(
+          Icons.picture_as_pdf,
+          color: Colors.red,
+        );
+      } else if (carpeta.extension == "jpg" ||
+          carpeta.extension == "png" ||
+          carpeta.extension == "gif") {
+        myIcon = Icon(
+          Icons.image,
+        );
+      } else
+        myIcon = Icon(
+          Icons.file_copy,
+        );
     }
+    // retornando el card(contenndores del GridView)
+    // ------------------------------------------------
     return Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         color: Color.fromRGBO(219, 220, 222, 1),
         child: Column(
           children: <Widget>[
+            Container(
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.only(left: 10),
+              child: Checkbox(value: true, onChanged: (value) {}),
+            ),
             Expanded(
                 child: IconButton(
+              splashColor: Colors.red,
               alignment: Alignment.center,
               color: Color.fromRGBO(59, 134, 232, 1),
               iconSize: 80,
-              onPressed: () {},
+              onPressed: () {
+                myShowDialog("Deseas Eliminar", "");
+              },
               icon: myIcon,
             )),
             Text(
@@ -404,31 +386,4 @@ class _CarpetasState extends State<Carpetas> {
           ],
         ));
   }
-
-  // Future<List<Widget>> _dataList(value_id_user, value_pathname) async{
-  //   List<CarpetaModel> list = CarpetaProvider.cargarCarpeta(value_id_user, value_pathname);
-  //   return list.map((m)=>ListTile(
-  //     title: m.path
-  //   )).ToList();
-
-  // }
-
-  // return Dismissible(
-  //   key: UniqueKey(),
-  //   background: Container(
-  //     color: Colors.redAccent,
-  //   ),
-  //   onDismissed: (dir) => carpetaProvider.eleminarAlumno(alumno.id),
-  //   child: ListTile(
-  //     leading: CircleAvatar(backgroundImage: _validarImagen(alumno)),
-  //     title: Text('${alumno.nombre} ${alumno.apellidos}'),
-  //     subtitle: Text(alumno.id),
-  //     trailing: Icon(Icons.keyboard_arrow_right),
-  //     onTap: () => Navigator.pushNamed(context, 'carpeta', arguments: carpeta)
-  //         .then((value) {
-  //       setState(() {});
-  //     }),
-  //   ),
-  // );
-
 }
