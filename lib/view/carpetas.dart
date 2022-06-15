@@ -24,6 +24,8 @@ class _CarpetasState extends State<Carpetas> {
   final m = PaginaAgregarBar();
   int _paginaActual = 0;
   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
+  bool checkBoxValue = false;
+  List<int> listCheck = new List();
 
 //  lista de carpetas
 // ------------------------------------------
@@ -323,7 +325,8 @@ class _CarpetasState extends State<Carpetas> {
               mainAxisSpacing: 10,
             ),
             itemCount: snapshot.data.length,
-            itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
+            itemBuilder: (context, i) =>
+                _crearItem(snapshot.data[i], context, i),
           );
         } else {
           return Center(
@@ -334,7 +337,7 @@ class _CarpetasState extends State<Carpetas> {
     );
   }
 
-  Widget _crearItem(CarpetaModel carpeta, BuildContext context) {
+  Widget _crearItem(CarpetaModel carpeta, BuildContext context, i) {
     Icon myIcon = Icon(
       Icons.folder,
     );
@@ -356,34 +359,64 @@ class _CarpetasState extends State<Carpetas> {
           Icons.file_copy,
         );
     }
+
     // retornando el card(contenndores del GridView)
     // ------------------------------------------------
-    return Card(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        color: Color.fromRGBO(219, 220, 222, 1),
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.only(left: 10),
-              child: Checkbox(value: true, onChanged: (value) {}),
-            ),
-            Expanded(
-                child: IconButton(
-              splashColor: Colors.red,
-              alignment: Alignment.center,
-              color: Color.fromRGBO(59, 134, 232, 1),
-              iconSize: 80,
-              onPressed: () {
-                myShowDialog("Deseas Eliminar", "");
-              },
-              icon: myIcon,
-            )),
-            Text(
-              carpeta.name,
-            ),
-          ],
-        ));
+    return GestureDetector(
+      onLongPress: () {
+        //myShowDialog("long press", "");
+        setState(() {
+          // if (checkBoxValue)
+          //   checkBoxValue = false;
+          // else
+          //   checkBoxValue = true;
+
+          listCheck.add(i); // agregamos el indice a la lista
+          print(listCheck);
+          print(listCheck.indexOf(i));
+          if (listCheck.indexOf(i) == -1) {
+            // si  no esta en la lista
+            checkBoxValue = false;
+          } else {
+            // si esta en la lista
+            checkBoxValue = true;
+          }
+        });
+        //check();
+      },
+      //onTap: () => myShowDialog("on tap", ""),
+      child: Card(
+          key: Key(carpeta.path_name),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          color: Color.fromRGBO(219, 220, 222, 1),
+          child: Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topRight,
+                padding: EdgeInsets.only(left: 10),
+                child: Checkbox(
+                    value: checkBoxValue,
+                    onChanged: (bool newValue) {
+                      //checkBoxValue = newValue;
+                      //listCheck.add(i);
+                      //checkBoxValue = false;
+                    }),
+              ),
+              Expanded(
+                  child: IconButton(
+                splashColor: Colors.red,
+                alignment: Alignment.center,
+                color: Color.fromRGBO(59, 134, 232, 1),
+                iconSize: 80,
+                onPressed: () {},
+                icon: myIcon,
+              )),
+              Text(
+                carpeta.name,
+              ),
+            ],
+          )),
+    );
   }
 }
