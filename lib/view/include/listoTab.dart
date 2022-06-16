@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:organizapp/model/ActividadMoldel.dart';
+import 'package:organizapp/provider/ActividadProvider.dart';
 
 class ListoTab extends StatefulWidget {
   const ListoTab({Key key}) : super(key: key);
@@ -8,6 +10,11 @@ class ListoTab extends StatefulWidget {
 }
 
 class _ListoTabState extends State<ListoTab> {
+@override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // creamos la variable con el que iniciara el DropdownButton
@@ -76,74 +83,9 @@ class _ListoTabState extends State<ListoTab> {
             ),
             Container(
               height: 400,
-              child: GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(40),
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text("He'd have you all unravel at the"),
-                    color: Colors.teal[100],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Heed not the rabble'),
-                    color: Colors.teal[200],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Sound of screams but the'),
-                    color: Colors.teal[300],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Who scream'),
-                    color: Colors.teal[400],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution is coming...'),
-                    color: Colors.teal[500],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Text('Revolution, they...'),
-                    color: Colors.teal[600],
-                  ),
-                ],
+              child: _listWidgetActividad(
+                "1002","drive/1002","","","2021-02-15::2023-05-15"
+
               ),
             )
           ],
@@ -151,4 +93,64 @@ class _ListoTabState extends State<ListoTab> {
       ),
     );
   }
+
+FutureBuilder _listWidgetActividad(id_user, path, priority, search, range) {
+    return FutureBuilder(
+      future: ActividadProvider.cargarActividad(id_user, path, priority, search, range),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return GridView.builder(
+            //children: snapshot.data,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 2.5 / 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+
+              //primary: false,
+              //   padding: const EdgeInsets.all(40),
+              //   crossAxisSpacing: 8,
+              //   mainAxisSpacing: 10,
+              //   crossAxisCount: 2,
+            ),
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+
+   Widget _crearItem(ActividadModel actividad, BuildContext context) {
+    Icon myIcon = Icon(
+      Icons.local_activity,
+    );
+    
+    return Card(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        color: Color.fromRGBO(219, 220, 222, 1),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: IconButton(
+              alignment: Alignment.center,
+              color: Color.fromRGBO(59, 134, 232, 1),
+              iconSize: 80,
+              onPressed: () {},
+              icon: myIcon,
+            )),
+            Text(
+              actividad.tarea_nombre,
+            ),
+          ],
+        ));
+  }
+
 }
