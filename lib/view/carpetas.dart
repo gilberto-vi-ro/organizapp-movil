@@ -328,6 +328,9 @@ class _CarpetasState extends State<Carpetas> {
             itemBuilder: (context, i) =>
                 _crearItem(snapshot.data[i], context, i),
           );
+        } else if (!snapshot.hasData && CarpetaProvider.getMsgText() != "") {
+          return myShowDialog(
+              CarpetaProvider.getMsgTitle(), CarpetaProvider.getMsgText());
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -360,6 +363,14 @@ class _CarpetasState extends State<Carpetas> {
         );
     }
 
+    if (listCheck.indexOf(i) == -1) {
+      // si  no esta en la lista
+      checkBoxValue = false;
+    } else {
+      // si esta en la lista
+      checkBoxValue = true;
+    }
+
     // retornando el card(contenndores del GridView)
     // ------------------------------------------------
     return GestureDetector(
@@ -370,21 +381,16 @@ class _CarpetasState extends State<Carpetas> {
           //   checkBoxValue = false;
           // else
           //   checkBoxValue = true;
-
-          listCheck.add(i); // agregamos el indice a la lista
           print(listCheck);
           print(listCheck.indexOf(i));
-          if (listCheck.indexOf(i) == -1) {
-            // si  no esta en la lista
-            checkBoxValue = false;
+          if (listCheck.contains(i)) {
+            listCheck.remove(i);
           } else {
-            // si esta en la lista
-            checkBoxValue = true;
+            listCheck.add(i); // agregamos el indice a la list
           }
         });
-        //check();
       },
-      //onTap: () => myShowDialog("on tap", ""),
+      onTap: () => myShowDialog("on tap", ""),
       child: Card(
           key: Key(carpeta.path_name),
           shape:
