@@ -4,7 +4,7 @@ import 'package:organizapp/view/editarPerfil.dart';
 import 'include/agregarBar.dart';
 import 'include/editarBar.dart';
 import 'include/entregadoTab.dart';
-import 'include/inicioTabs.dart';
+import 'include/pendienteTab.dart';
 import 'include/listoTab.dart';
 
 class Carp1 extends StatefulWidget {

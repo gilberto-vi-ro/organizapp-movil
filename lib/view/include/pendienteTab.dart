@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'agregarBar.dart';
 import 'editarBar.dart';
 
-class InicioTabs extends StatefulWidget {
-  const InicioTabs({Key key}) : super(key: key);
+class PendienteTab extends StatefulWidget {
+  const PendienteTab({Key key}) : super(key: key);
   @override
-  _InicioTabsState createState() => _InicioTabsState();
+  _PendienteTabState createState() => _PendienteTabState();
 }
 
-class _InicioTabsState extends State<InicioTabs> {
+class _PendienteTabState extends State<PendienteTab> {
   // creamos la variable con el que iniciara el DropdownButton
   // que sera urgente
   String dropdwoncurrentvalue = "Urgente";

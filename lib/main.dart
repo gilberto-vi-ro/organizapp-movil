@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:organizapp/view/DrawerM.dart';
+import 'package:organizapp/view/actividades.dart';
 import 'package:organizapp/view/actividades.dart';
 import 'package:organizapp/view/carpetas.dart';
 import 'package:organizapp/view/editarPerfil.dart';
@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       routes: {
         'login': (BuildContext context) => Login(),
-        'DrawerM': (BuildContext context) => DrawerM(),
+        'Actividades': (BuildContext context) => Actividades(),
         'editarPerfil': (BuildContext context) => EditarPerfil(),
         'carpetas': (BuildContext context) => Carpetas(),
         'pruev': (BuildContext context) => MyAps(),
       },
-      initialRoute: 'carpetas',
+      initialRoute: 'Actividades',
       theme: ThemeData(primaryColor: Color.fromRGBO(41, 141, 122, 1)),
     );
   }

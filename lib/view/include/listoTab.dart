@@ -19,6 +19,7 @@ class _ListoTabState extends State<ListoTab> {
   Widget build(BuildContext context) {
     // creamos la variable con el que iniciara el DropdownButton
     // que sera urgente
+    
     String dropdwoncurrentvalue = "Urgente";
     return Scaffold(
       //en esta parte se acran los GridVio y contenedores
@@ -84,7 +85,7 @@ class _ListoTabState extends State<ListoTab> {
             Container(
               height: 400,
               child: _listWidgetActividad(
-                "1002","drive/1002","","","2021-02-15::2023-05-15"
+                "1002","drive/1002","","","2020-02-15::2023-05-15"
 
               ),
             )

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:organizapp/view/DrawerM.dart';
+import 'package:organizapp/view/actividades.dart';
 import 'package:organizapp/view/carp1.dart';
 import 'package:organizapp/model/CarpetaModel.dart';
 import 'package:organizapp/provider/carpetaProvider.dart';
@@ -140,7 +140,7 @@ class _CarpetasState extends State<Carpetas> {
                     leading: Icon(Icons.home,
                         color: Color.fromRGBO(41, 141, 121, 1)),
                     onTap: () =>
-                        Navigator.pushReplacementNamed(context, "DrawerM")),
+                        Navigator.pushReplacementNamed(context, "Actividades")),
 
                 ListTile(
                   title: Text('Actividades'),
@@ -150,7 +150,7 @@ class _CarpetasState extends State<Carpetas> {
                   ),
                   onTap: () {
                     Navigator.restorablePushReplacementNamed(
-                        context, "DrawerM");
+                        context, "Actividades");
                     // Navigator.pushReplacementNamed(context, "actividades");
                   },
                 ),

@@ -30,13 +30,15 @@ class ActividadProvider {
       },
       encoding: Encoding.getByName("utf-8"),
     );
+      print("hola mundo 5");
     final Map<String, dynamic> decodeData = json.decode(response.body);
-    
+  
     final List<ActividadModel> listaActividad = new List();
-      print(decodeData);
+        print(decodeData);
+        
     if (decodeData["type"] != "success") return [];
 
-    print(decodeData["data"]);
+     //print(decodeData["data"]);
     decodeData["data"].forEach((element) {
       final newActividad = ActividadModel.fromJson(element);
       listaActividad.add(newActividad);
