@@ -26,6 +26,8 @@ class _CarpetasState extends State<Carpetas> {
   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
   bool checkBoxValue = false;
   List<int> listCheck = new List();
+  final _key = GlobalKey();
+  bool _isVisible = true;
 
 //  lista de carpetas
 // ------------------------------------------
@@ -140,7 +142,7 @@ class _CarpetasState extends State<Carpetas> {
                     leading: Icon(Icons.home,
                         color: Color.fromRGBO(41, 141, 121, 1)),
                     onTap: () =>
-                        Navigator.pushReplacementNamed(context, "Actividades")),
+                        Navigator.pushReplacementNamed(context, "DrawerM")),
 
                 ListTile(
                   title: Text('Actividades'),
@@ -150,7 +152,7 @@ class _CarpetasState extends State<Carpetas> {
                   ),
                   onTap: () {
                     Navigator.restorablePushReplacementNamed(
-                        context, "Actividades");
+                        context, "DrawerM");
                     // Navigator.pushReplacementNamed(context, "actividades");
                   },
                 ),
@@ -283,17 +285,17 @@ class _CarpetasState extends State<Carpetas> {
     );
   }
 
-  myShowDialog(msTitle, msContent) {
+  AlertDialog myShowDialog(msgTitle, msgContent) {
     showDialog(
         context: context,
-        builder: (buildcontext) {
+        builder: (BuildContext buildcontext) {
           return AlertDialog(
             backgroundColor: Color.fromRGBO(232, 245, 251, 1),
             title: Text(
-              msTitle,
+              msgTitle,
               style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
             ),
-            content: Text(msContent, style: TextStyle(color: Colors.red)),
+            content: Text(msgContent, style: TextStyle(color: Colors.red)),
             actions: <Widget>[
               RaisedButton(
                 color: Color.fromRGBO(41, 141, 122, 1),
@@ -308,6 +310,42 @@ class _CarpetasState extends State<Carpetas> {
             ],
           );
         });
+  }
+
+  myAlertDialog(msgTitle, msgContent, BuildContext context) {
+    return Visibility(
+      visible: _isVisible,
+      child: AlertDialog(
+        key: _key,
+        backgroundColor: Color.fromRGBO(232, 245, 251, 1),
+        title: Text(
+          msgTitle,
+          style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+        ),
+        content: Text(msgContent, style: TextStyle(color: Colors.red)),
+        actions: <Widget>[
+          RaisedButton(
+            color: Color.fromRGBO(41, 141, 122, 1),
+            child: Text(
+              "CERRAR",
+              style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
+            ),
+            onPressed: () {
+              setState(() {
+                _isVisible = !_isVisible;
+              });
+              //print();
+              //Navigator.pop(context.widget);
+              //Navigator.pushReplacementNamed(context, Key("AlertDialog"));
+              // Navigator.of( ValueKey("1000") );
+              // Navigator.removeAt(Key("1000"));
+              // this.removeAt();
+              //_key.currentContext;
+            },
+          )
+        ],
+      ),
+    );
   }
 
   FutureBuilder _listWidgetFolder(value_id_user, value_pathname) {
@@ -328,9 +366,10 @@ class _CarpetasState extends State<Carpetas> {
             itemBuilder: (context, i) =>
                 _crearItem(snapshot.data[i], context, i),
           );
-        } else if (!snapshot.hasData && CarpetaProvider.getMsgText() != "") {
-          return myShowDialog(
-              CarpetaProvider.getMsgTitle(), CarpetaProvider.getMsgText());
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          var message = CarpetaProvider.getMsgText();
+          //if (snapshot.data.runtimeType == http.Response)
+          return myAlertDialog("Error", message, context);
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -381,8 +420,8 @@ class _CarpetasState extends State<Carpetas> {
           //   checkBoxValue = false;
           // else
           //   checkBoxValue = true;
-          print(listCheck);
-          print(listCheck.indexOf(i));
+          //print(listCheck);
+          //print(listCheck.indexOf(i));
           if (listCheck.contains(i)) {
             listCheck.remove(i);
           } else {
