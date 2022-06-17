@@ -142,7 +142,7 @@ class _CarpetasState extends State<Carpetas> {
                     leading: Icon(Icons.home,
                         color: Color.fromRGBO(41, 141, 121, 1)),
                     onTap: () =>
-                        Navigator.pushReplacementNamed(context, "DrawerM")),
+                        Navigator.pushReplacementNamed(context, "Actividades")),
 
                 ListTile(
                   title: Text('Actividades'),
@@ -152,7 +152,7 @@ class _CarpetasState extends State<Carpetas> {
                   ),
                   onTap: () {
                     Navigator.restorablePushReplacementNamed(
-                        context, "DrawerM");
+                        context, "Actividades");
                     // Navigator.pushReplacementNamed(context, "actividades");
                   },
                 ),

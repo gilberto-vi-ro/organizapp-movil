@@ -17,8 +17,8 @@ class Actividades extends StatefulWidget {
 class _ActividadesState extends State<Actividades> {
   // array de los tabBart
   // ---------------------------------------------
-  
-    final titleTabs = <Widget>[
+
+  final titleTabs = <Widget>[
     Tab(
       text: "Pendiente",
     ),
@@ -31,24 +31,27 @@ class _ActividadesState extends State<Actividades> {
   ];
 
   final containerTabs = <Widget>[
-      new PendienteTab(),
-      new ListoTab(),
-      new EntregadoTab(),
-    ];
-
-  
+    new PendienteTab(),
+    new ListoTab(),
+    new EntregadoTab(),
+  ];
 
   final m = PaginaAgregarBar();
   int _paginaActual = 0;
   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
+
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = const Text('OrganizApp');
+
   @override
   Widget build(BuildContext context) {
     // return DefaultTabController(length: 3, child: Scaffold(appBar: AppBar(
     //   title: O,
     // ),))
+
     // controlador de los tabs
     // --------------------------------------------
-    final TabController =new DefaultTabController(
+    final TabController = new DefaultTabController(
         length: 3,
         child: Scaffold(
           // comienza en menu amburgesa (drawer)
@@ -88,8 +91,8 @@ class _ActividadesState extends State<Actividades> {
                         title: Text('Principal'),
                         leading: Icon(Icons.home,
                             color: Color.fromRGBO(41, 141, 121, 1)),
-                        onTap: () =>
-                            Navigator.pushReplacementNamed(context, "Actividades")),
+                        onTap: () => Navigator.pushReplacementNamed(
+                            context, "Actividades")),
 
                     ListTile(
                       title: Text('Actividades'),
@@ -143,14 +146,47 @@ class _ActividadesState extends State<Actividades> {
           appBar: AppBar(
             backgroundColor: Color.fromRGBO(41, 141, 122, 1),
             centerTitle: true,
-            title: Text('OrganizApp',
-                style: TextStyle(
-                    color: Color.fromRGBO(
-                  232,
-                  245,
-                  251,
-                  1,
-                ))),
+            title: customSearchBar,
+            //automaticallyImplyLeading: false,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (customIcon.icon == Icons.search) {
+                      if (customIcon.icon == Icons.search) {
+                        customIcon = const Icon(Icons.cancel);
+                        customSearchBar = const ListTile(
+                          //contentPadding: EdgeInsetsGeometry(),
+                          leading: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                          title: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Search...',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+                    } else {
+                      customIcon = const Icon(Icons.search);
+                      customSearchBar = const Text('OrganizApp');
+                    }
+                  });
+                },
+                icon: customIcon,
+              )
+            ],
           ),
 
           body: Column(
