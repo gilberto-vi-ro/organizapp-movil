@@ -6,6 +6,7 @@ import 'include/editarBar.dart';
 import 'include/entregadoTab.dart';
 import 'include/pendienteTab.dart';
 import 'include/listoTab.dart';
+import 'include/myWidget.dart';
 
 class Actividades extends StatefulWidget {
   Actividades({Key key}) : super(key: key);
@@ -18,25 +19,7 @@ class _ActividadesState extends State<Actividades> {
   // array de los tabBart
   // ---------------------------------------------
 
-  final titleTabs = <Widget>[
-    Tab(
-      text: "Pendiente",
-    ),
-    Tab(
-      text: "Listo",
-    ),
-    Tab(
-      text: "Entregado",
-    )
-  ];
-
-  final containerTabs = <Widget>[
-    new PendienteTab(),
-    new ListoTab(),
-    new EntregadoTab(),
-  ];
-
-  final m = PaginaAgregarBar();
+  //final m = PaginaAgregarBar();
   int _paginaActual = 0;
   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
 
@@ -48,226 +31,163 @@ class _ActividadesState extends State<Actividades> {
     // return DefaultTabController(length: 3, child: Scaffold(appBar: AppBar(
     //   title: O,
     // ),))
-
     // controlador de los tabs
     // --------------------------------------------
-    final TabController = new DefaultTabController(
+    final myTabController = new DefaultTabController(
         length: 3,
         child: Scaffold(
           // comienza en menu amburgesa (drawer)
           // ----------------------------------------------
-          drawer: Drawer(
-            child: Container(
-                decoration:
-                    BoxDecoration(color: Color.fromRGBO(232, 245, 251, 1)),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    UserAccountsDrawerHeader(
-                      decoration:
-                          BoxDecoration(color: Color.fromRGBO(41, 141, 121, 1)),
-                      currentAccountPicture: RaisedButton(
-                          padding: EdgeInsets.only(top: 0, left: 0, right: 0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0)),
-                          elevation: 0,
-                          color: Color.fromRGBO(41, 141, 121, 1),
-                          child: Image.asset(
-                            'assets/user-camera2.jpg',
-                            // height: 100.0,
-                            // width: sss150.0,
-                          ),
-                          onPressed: () {}),
-                      accountName: Text(
-                        'Cresencio diaz hernandez',
-                        style:
-                            TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                      ),
-                    ),
-
-                    // hacemos la lista de menus
-                    //  -----------------------------------------------------
-                    ListTile(
-                        title: Text('Principal'),
-                        leading: Icon(Icons.home,
-                            color: Color.fromRGBO(41, 141, 121, 1)),
-                        onTap: () => Navigator.pushReplacementNamed(
-                            context, "Actividades")),
-
-                    ListTile(
-                      title: Text('Actividades'),
-                      leading: Image.asset(
-                        'assets/task.png',
-                        height: 28.0,
-                      ),
-                      onTap: () {
-                        Navigator.restorablePushReplacementNamed(
-                            context, "Actividades");
-                        // Navigator.pushReplacementNamed(context, "actividades");
-                      },
-                    ),
-
-                    ListTile(
-                      title: Text('Carpetas'),
-                      leading: Icon(Icons.folder,
-                          color: Color.fromRGBO(41, 141, 121, 1)),
-                      onTap: () {
-                        Navigator.restorablePushReplacementNamed(
-                            context, "carpetas");
-                      },
-                    ),
-
-                    ListTile(
-                      title: Text(
-                        'Editar Perfil',
-                      ),
-                      leading: Icon(Icons.edit,
-                          color: Color.fromRGBO(41, 141, 121, 1)),
-                      onTap: () {
-                        Navigator.pushReplacementNamed(context, "editarPerfil");
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Serrar Secion'),
-                      leading: Icon(Icons.exit_to_app,
-                          color: Color.fromRGBO(41, 141, 121, 1)),
-                      onTap: () {
-                        Navigator.restorablePushReplacementNamed(
-                            context, "login");
-                        // Navigator.pushReplacementNamed(context, "actividades");
-                      },
-                    )
-                  ],
-                )),
-          ),
-
+          drawer: myDrawer(context),
           // asemos los tabs dentro de un appBar
           // --------------------------------------
-          appBar: AppBar(
-            backgroundColor: Color.fromRGBO(41, 141, 122, 1),
-            centerTitle: true,
-            title: customSearchBar,
-            //automaticallyImplyLeading: false,
-            actions: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (customIcon.icon == Icons.search) {
-                      if (customIcon.icon == Icons.search) {
-                        customIcon = const Icon(Icons.cancel);
-                        customSearchBar = const ListTile(
-                          //contentPadding: EdgeInsetsGeometry(),
-                          leading: Icon(
-                            Icons.search,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                          title: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Search...',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }
-                    } else {
-                      customIcon = const Icon(Icons.search);
-                      customSearchBar = const Text('OrganizApp');
-                    }
-                  });
-                },
-                icon: customIcon,
-              )
-            ],
-          ),
-
-          body: Column(
-            // Column
-            children: <Widget>[
-              Container(
-                color: Color.fromRGBO(219, 220, 222, 1), // Tab Bar color change
-                child: TabBar(
-                  // TabBar
-                  //controller: tabController,
-                  unselectedLabelColor: Color.fromRGBO(59, 56, 56, 1),
-                  labelColor: Color.fromRGBO(41, 141, 122, 1),
-                  indicatorWeight: 4,
-                  indicatorColor: Color.fromRGBO(41, 141, 122, 1),
-                  tabs: titleTabs,
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: containerTabs,
-                ),
-              ),
-            ],
-          ),
-
+          appBar: _myAppBar(context),
+          body: _myTabs(context),
           // body: _paginas[_paginaActual],
-
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Color.fromRGBO(59, 56, 56, 1),
-            // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-            selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
-            unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-            selectedIconTheme:
-                IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
-            onTap: (index) {
-              if (index == 3) {
-                print("hola mundo");
-              } else if (index == 4) {
-                print("hola mundo");
-              } else {
-                setState(() {
-                  _paginaActual = index;
-                });
-              }
-            },
-            // ponemos la barrra de navegador de abajo
-            // el bottomnavigator------------------------
-            currentIndex: _paginaActual,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.picture_as_pdf_rounded,
-                ),
-                label: "Actividades",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.add_circle,
-                ),
-                label: "Agregar",
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.edit,
-                  ),
-                  label: "Editar"),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.delete,
-                  ),
-                  label: "Eliminar"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.loop_outlined), label: "Cargar")
-            ],
-          ),
+          bottomNavigationBar: _myBottomNavigationBar(context),
         ));
 
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TabController,
+      home: myTabController,
+    );
+  }
+
+  Widget _myAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Color.fromRGBO(41, 141, 122, 1),
+      centerTitle: true,
+      title: customSearchBar,
+      //automaticallyImplyLeading: false,
+      actions: [
+        IconButton(
+          onPressed: () {
+            setState(() {
+              if (customIcon.icon == Icons.search) {
+                if (customIcon.icon == Icons.search) {
+                  customIcon = const Icon(Icons.cancel);
+                  customSearchBar = const ListTile(
+                    //contentPadding: EdgeInsetsGeometry(),
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                customIcon = const Icon(Icons.search);
+                customSearchBar = const Text('OrganizApp');
+              }
+            });
+          },
+          icon: customIcon,
+        )
+      ],
+    );
+  }
+
+  Widget _myTabs(BuildContext context) {
+    return Column(
+      // Column
+      children: <Widget>[
+        Container(
+          color: Color.fromRGBO(219, 220, 222, 1), // Tab Bar color change
+          child: TabBar(
+            // TabBar
+            //controller: tabController,
+            unselectedLabelColor: Color.fromRGBO(59, 56, 56, 1),
+            labelColor: Color.fromRGBO(41, 141, 122, 1),
+            indicatorWeight: 4,
+            indicatorColor: Color.fromRGBO(41, 141, 122, 1),
+            tabs: <Widget>[
+              Tab(
+                text: "Pendiente",
+              ),
+              Tab(
+                text: "Listo",
+              ),
+              Tab(
+                text: "Entregado",
+              )
+            ],
+          ),
+        ),
+        Expanded(
+          child: TabBarView(
+            children: <Widget>[
+              new PendienteTab(),
+              new ListoTab(),
+              new EntregadoTab(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _myBottomNavigationBar(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Color.fromRGBO(59, 56, 56, 1),
+      // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+      selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
+      unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+      selectedIconTheme: IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
+      onTap: (index) {
+        if (index == 3) {
+          print("hola mundo");
+        } else if (index == 4) {
+          print("hola mundo");
+        } else {
+          setState(() {
+            _paginaActual = index;
+          });
+        }
+      },
+      // ponemos la barrra de navegador de abajo
+      // el bottomnavigator------------------------
+      currentIndex: _paginaActual,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.picture_as_pdf_rounded,
+          ),
+          label: "Actividades",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.add_circle,
+          ),
+          label: "Agregar",
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.edit,
+            ),
+            label: "Editar"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.delete,
+            ),
+            label: "Eliminar"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.loop_outlined), label: "Cargar")
+      ],
     );
   }
 }

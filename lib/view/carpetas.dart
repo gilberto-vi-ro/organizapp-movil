@@ -7,6 +7,7 @@ import 'package:organizapp/provider/carpetaProvider.dart';
 
 import 'include/agregarBar.dart';
 import 'include/editarBar.dart';
+import 'include/myWidget.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +29,8 @@ class _CarpetasState extends State<Carpetas> {
   List<int> listCheck = new List();
   final _key = GlobalKey();
   bool _isVisible = true;
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = const Text('OrganizApp');
 
 //  lista de carpetas
 // ------------------------------------------
@@ -96,220 +99,163 @@ class _CarpetasState extends State<Carpetas> {
     return Scaffold(
       // ponemos el apBar (barra menu)
       // ----------------------------------------------
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'OrganizApp',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-        ),
-        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
-      ),
+      appBar: _myAppBar(context),
 
 //  ponemos el drawer en esta pagina
 // --------------------------------------------------
-      drawer: Drawer(
-        child: Container(
-            decoration: BoxDecoration(color: Color.fromRGBO(232, 245, 251, 1)),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  decoration:
-                      BoxDecoration(color: Color.fromRGBO(41, 141, 121, 1)),
-                  currentAccountPicture: RaisedButton(
-                      padding: EdgeInsets.only(top: 0, left: 0, right: 0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0)),
-                      elevation: 0,
-                      color: Color.fromRGBO(41, 141, 121, 1),
-                      child: Image.asset(
-                        'assets/user-camera2.jpg',
-                        // height: 100.0,
-                        // width: sss150.0,
-                      ),
-                      onPressed: () {}),
-                  accountName: Text(
-                    'Cresencio diaz hernandez',
-                    style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                  ),
-                ),
-
-                // hacemos la lista de menus
-                //  -----------------------------------------------------
-                ListTile(
-                    title: Text('Principal'),
-                    leading: Icon(Icons.home,
-                        color: Color.fromRGBO(41, 141, 121, 1)),
-                    onTap: () =>
-                        Navigator.pushReplacementNamed(context, "Actividades")),
-
-                ListTile(
-                  title: Text('Actividades'),
-                  leading: Image.asset(
-                    'assets/task.png',
-                    height: 28.0,
-                  ),
-                  onTap: () {
-                    Navigator.restorablePushReplacementNamed(
-                        context, "Actividades");
-                    // Navigator.pushReplacementNamed(context, "actividades");
-                  },
-                ),
-
-                ListTile(
-                  title: Text('Carpetas'),
-                  leading: Icon(Icons.folder,
-                      color: Color.fromRGBO(41, 141, 121, 1)),
-                  onTap: () {
-                    Navigator.restorablePushReplacementNamed(
-                        context, "carpetas");
-                  },
-                ),
-
-                ListTile(
-                  title: Text(
-                    'Editar Perfil',
-                  ),
-                  leading:
-                      Icon(Icons.edit, color: Color.fromRGBO(41, 141, 121, 1)),
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, "editarPerfil");
-                  },
-                ),
-                ListTile(
-                  title: Text('Serrar Secion'),
-                  leading: Icon(Icons.exit_to_app,
-                      color: Color.fromRGBO(41, 141, 121, 1)),
-                  onLongPress: () {},
-                )
-              ],
-            )),
-      ),
+      drawer: myDrawer(context),
 
       // ponemos el scrolvio para el sclol de la ap
       // dentro de este pondremas lo siguinente
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: [
-                // Boton de retroceso
-                // -----------------
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                  ),
-                  color: Color.fromRGBO(41, 141, 122, 1),
-                  onPressed: () {},
-                ),
-                // Barra de path
-                // ----------------
-                Text(
-                  'Carpeta1/Carpeta2/Carpeta3',
-                  style: TextStyle(
-                      color: Color.fromRGBO(41, 141, 122, 1), fontSize: 15),
-                ),
-              ],
-            ),
-            // titulo de la pagina
-            // ----------------------
-            Text(
-              'Carpetas',
-              style:
-                  TextStyle(color: Color.fromRGBO(59, 56, 56, 1), fontSize: 18),
-            ),
-            // ponemos dentro de un container
-            // nuestro Gridviw
-            // -------------------------------
-            Container(
-              height: 800,
-              child: _listWidgetFolder("1002", "drive/1002"),
-            ),
-          ],
-        ),
-      ),
+      body: _mySingleChildScrollView(context),
 
       // ponemos la barra inferior en archivo carpetas
       // ------------------------------------------------
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Color.fromRGBO(59, 56, 56, 1),
-        // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-        selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
-        unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
-        selectedIconTheme:
-            IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
-        onTap: (index) {
-          if (index == 3) {
-            print("hola mundo");
-          } else if (index == 4) {
-            print("hola mundo");
-          } else {
+      bottomNavigationBar: _myBottomNavigationBar(context),
+    );
+  }
+
+  Widget _myAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Color.fromRGBO(41, 141, 122, 1),
+      centerTitle: true,
+      title: customSearchBar,
+      //automaticallyImplyLeading: false,
+      actions: [
+        IconButton(
+          onPressed: () {
             setState(() {
-              _paginaActual = index;
+              if (customIcon.icon == Icons.search) {
+                if (customIcon.icon == Icons.search) {
+                  customIcon = const Icon(Icons.cancel);
+                  customSearchBar = const ListTile(
+                    //contentPadding: EdgeInsetsGeometry(),
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                customIcon = const Icon(Icons.search);
+                customSearchBar = const Text('OrganizApp');
+              }
             });
-          }
-        },
-        // ponemos la barrra de navegador de abajo
-        // el bottomnavigator------------------------
-        currentIndex: _paginaActual,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.picture_as_pdf_rounded,
-            ),
-            label: "Actividades",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_circle,
-            ),
-            label: "Agregar",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.edit,
+          },
+          icon: customIcon,
+        )
+      ],
+    );
+  }
+
+  Widget _mySingleChildScrollView(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: [
+              // Boton de retroceso
+              // -----------------
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                color: Color.fromRGBO(41, 141, 122, 1),
+                onPressed: () {},
               ),
-              label: "Editar"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.delete,
+              // Barra de path
+              // ----------------
+              Text(
+                'Carpeta1/Carpeta2/Carpeta3',
+                style: TextStyle(
+                    color: Color.fromRGBO(41, 141, 122, 1), fontSize: 15),
               ),
-              label: "Eliminar"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.loop_outlined), label: "Cargar")
+            ],
+          ),
+          // titulo de la pagina
+          // ----------------------
+          Text(
+            'Carpetas',
+            style:
+                TextStyle(color: Color.fromRGBO(59, 56, 56, 1), fontSize: 18),
+          ),
+          // ponemos dentro de un container
+          // nuestro Gridviw
+          // -------------------------------
+          Container(
+            height: 800,
+            child: _listWidgetFolder("1002", "drive/1002"),
+          ),
         ],
       ),
     );
   }
 
-  AlertDialog myShowDialog(msgTitle, msgContent) {
-    showDialog(
-        context: context,
-        builder: (BuildContext buildcontext) {
-          return AlertDialog(
-            backgroundColor: Color.fromRGBO(232, 245, 251, 1),
-            title: Text(
-              msgTitle,
-              style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
+  Widget _myBottomNavigationBar(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Color.fromRGBO(59, 56, 56, 1),
+      // unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+      selectedItemColor: Color.fromRGBO(41, 141, 122, 1),
+      unselectedItemColor: Color.fromRGBO(232, 245, 251, 1),
+      selectedIconTheme: IconThemeData(color: Color.fromRGBO(41, 141, 122, 1)),
+      onTap: (index) {
+        if (index == 3) {
+          print("hola mundo");
+        } else if (index == 4) {
+          print("hola mundo");
+        } else {
+          setState(() {
+            _paginaActual = index;
+          });
+        }
+      },
+      // ponemos la barrra de navegador de abajo
+      // el bottomnavigator------------------------
+      currentIndex: _paginaActual,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.picture_as_pdf_rounded,
+          ),
+          label: "Actividades",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.add_circle,
+          ),
+          label: "Agregar",
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.edit,
             ),
-            content: Text(msgContent, style: TextStyle(color: Colors.red)),
-            actions: <Widget>[
-              RaisedButton(
-                color: Color.fromRGBO(41, 141, 122, 1),
-                child: Text(
-                  "CERRAR",
-                  style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+            label: "Editar"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.delete,
+            ),
+            label: "Eliminar"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.loop_outlined), label: "Cargar")
+      ],
+    );
   }
 
   myAlertDialog(msgTitle, msgContent, BuildContext context) {
@@ -429,7 +375,7 @@ class _CarpetasState extends State<Carpetas> {
           }
         });
       },
-      onTap: () => myShowDialog("on tap", ""),
+      onTap: () => myShowDialog("on tap", "", context),
       child: Card(
           key: Key(carpeta.path_name),
           shape:
