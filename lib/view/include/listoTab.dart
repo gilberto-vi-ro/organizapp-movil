@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:organizapp/model/ActividadMoldel.dart';
 import 'package:organizapp/provider/ActividadProvider.dart';
 
+import '../actividades.dart';
+
 class ListoTab extends StatefulWidget {
-  const ListoTab({Key key}) : super(key: key);
+  //propiedad
+  //String search = "hola mundo";
+  // constructor
+  ListoTab({Key key}) : super(key: key);
+  //ListoTab(this.search, {Key key}) : super(key: key);
+  //ListoTab(this.search);
 
   @override
   _ListoTabState createState() => _ListoTabState();
 }
 
 class _ListoTabState extends State<ListoTab> {
+  //   with AutomaticKeepAliveClientMixin {
+  // bool get wantKeepAlive => true; // ** and here
+  // constructor
+  //_ListoTabState(this.search);
+
+  //property
   bool _isVisible = true;
   String dropdwoncurrentvalue = "All";
   String id_user = "1002",
@@ -27,6 +40,10 @@ class _ListoTabState extends State<ListoTab> {
   Widget build(BuildContext context) {
     // creamos la variable con el que iniciara el DropdownButton
     // que sera urgente
+
+    search = ActividadesState.mySearch;
+    print(ActividadesState.mySearch);
+    setState(() {});
 
     return Scaffold(
       //en esta parte se acran los GridVio y contenedores

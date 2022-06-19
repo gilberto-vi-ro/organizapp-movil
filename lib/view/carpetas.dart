@@ -232,9 +232,9 @@ class _CarpetasState extends State<Carpetas> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.picture_as_pdf_rounded,
+            Icons.folder,
           ),
-          label: "Actividades",
+          label: "Carpetas",
         ),
         BottomNavigationBarItem(
           icon: Icon(

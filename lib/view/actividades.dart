@@ -12,19 +12,23 @@ class Actividades extends StatefulWidget {
   Actividades({Key key}) : super(key: key);
 
   @override
-  _ActividadesState createState() => _ActividadesState();
+  ActividadesState createState() => ActividadesState();
 }
 
-class _ActividadesState extends State<Actividades> {
-  // array de los tabBart
-  // ---------------------------------------------
+class ActividadesState extends State<Actividades> {
+  //property statics
+  static String mySearch = "";
 
-  //final m = PaginaAgregarBar();
+  //property
   int _paginaActual = 0;
   List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
+  Icon customIcon = Icon(Icons.search);
+  Widget customSearchBar = Text('OrganizApp');
 
-  Icon customIcon = const Icon(Icons.search);
-  Widget customSearchBar = const Text('OrganizApp');
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +69,8 @@ class _ActividadesState extends State<Actividades> {
             setState(() {
               if (customIcon.icon == Icons.search) {
                 if (customIcon.icon == Icons.search) {
-                  customIcon = const Icon(Icons.cancel);
-                  customSearchBar = const ListTile(
+                  customIcon = Icon(Icons.cancel);
+                  customSearchBar = ListTile(
                     //contentPadding: EdgeInsetsGeometry(),
                     leading: Icon(
                       Icons.search,
@@ -74,6 +78,11 @@ class _ActividadesState extends State<Actividades> {
                       size: 28,
                     ),
                     title: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          mySearch = value.toString();
+                        });
+                      },
                       decoration: InputDecoration(
                         hintText: 'Search...',
                         hintStyle: TextStyle(
@@ -90,8 +99,9 @@ class _ActividadesState extends State<Actividades> {
                   );
                 }
               } else {
-                customIcon = const Icon(Icons.search);
-                customSearchBar = const Text('OrganizApp');
+                customIcon = Icon(Icons.search);
+                customSearchBar = Text('OrganizApp');
+                mySearch = "";
               }
             });
           },
@@ -129,6 +139,7 @@ class _ActividadesState extends State<Actividades> {
         ),
         Expanded(
           child: TabBarView(
+            //controller: tabController,
             children: <Widget>[
               new PendienteTab(),
               new ListoTab(),

@@ -30,12 +30,12 @@ Widget myDrawer(BuildContext context) {
 
             // hacemos la lista de menus
             //  -----------------------------------------------------
-            ListTile(
-                title: Text('Principal'),
-                leading:
-                    Icon(Icons.home, color: Color.fromRGBO(41, 141, 121, 1)),
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, "Actividades")),
+            // ListTile(
+            //     title: Text('Principal'),
+            //     leading:
+            //         Icon(Icons.home, color: Color.fromRGBO(41, 141, 121, 1)),
+            //     onTap: () =>
+            //         Navigator.pushReplacementNamed(context, "Actividades")),
 
             ListTile(
               title: Text('Actividades'),
@@ -45,7 +45,7 @@ Widget myDrawer(BuildContext context) {
               ),
               onTap: () {
                 Navigator.restorablePushReplacementNamed(
-                    context, "Actividades");
+                    context, "actividades");
                 // Navigator.pushReplacementNamed(context, "actividades");
               },
             ),
@@ -69,7 +69,7 @@ Widget myDrawer(BuildContext context) {
               },
             ),
             ListTile(
-              title: Text('Serrar Secion'),
+              title: Text('Cerrar Sesion'),
               leading: Icon(Icons.exit_to_app,
                   color: Color.fromRGBO(41, 141, 121, 1)),
               onTap: () {
