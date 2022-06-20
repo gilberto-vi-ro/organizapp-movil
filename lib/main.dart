@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:organizapp/view/actividades.dart';
-import 'package:organizapp/view/actividades.dart';
-import 'package:organizapp/view/carpetas.dart';
-import 'package:organizapp/view/editarPerfil.dart';
-import 'package:organizapp/view/login.dart';
+import 'package:organizapp/view/Actividades.dart';
+import 'package:organizapp/view/Carpetas.dart';
+import 'package:organizapp/view/EditarPerfil.dart';
+import 'package:organizapp/view/Login.dart';
 import 'package:organizapp/view/pruev.dart';
 
 void main() {

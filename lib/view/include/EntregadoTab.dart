@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'PaginaAgregarBar.dart';
-import 'PaginaEditBar.dart';
 
-class PendienteTab extends StatefulWidget {
-  const PendienteTab({Key key}) : super(key: key);
+class EntregadoTab extends StatefulWidget {
+  const EntregadoTab({Key key}) : super(key: key);
+
   @override
-  _PendienteTabState createState() => _PendienteTabState();
+  _EntregadoTabState createState() => _EntregadoTabState();
 }
 
-class _PendienteTabState extends State<PendienteTab> {
-  // creamos la variable con el que iniciara el DropdownButton
-  // que sera urgente
-  String dropdwoncurrentvalue = "Urgente";
-
+class _EntregadoTabState extends State<EntregadoTab> {
   @override
   Widget build(BuildContext context) {
+    String dropdwoncurrentvalue = "Urgente";
     return Scaffold(
+      // ponemos el Gridview en esta pagina tambien entregado
+      // tabBar--------------------------------------------
       backgroundColor: Color.fromRGBO(232, 245, 251, 1),
       // este appbar sirve para poner nuestra barra de
       // path y el boton------------------------------
@@ -152,27 +150,3 @@ class _PendienteTabState extends State<PendienteTab> {
     );
   }
 }
-
-// clase del dropdown
-// ---------------------------------------------
-// ---------------------------------------------
-
-// body: DropdownButton(
-//   items: <String>['opcion1', 'opcion3', 'opcion3']
-//       .map<DropdownMenuItem<String>>((String value) {
-//     return DropdownMenuItem<String>(
-//       value: value,
-//       child: Text(value),
-//     );
-//   }).toList(),
-//   value: dropdwoncurrentvalue,
-//   icon: Icon(Icons.access_alarm),
-//   iconSize: 15,
-//   elevation: 16,
-//   underline: Container(height: 3, color: Colors.blue),
-//   onChanged: (String valueIn) {
-//     setState(() {
-//       dropdwoncurrentvalue = valueIn;
-//     });
-//   },
-// ),

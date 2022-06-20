@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:organizapp/view/editarPerfil.dart';
-import 'include/agregarBar.dart';
-import 'include/editarBar.dart';
-import 'include/entregadoTab.dart';
-import 'include/pendienteTab.dart';
-import 'include/listoTab.dart';
+import 'package:organizapp/view/EditarPerfil.dart';
+import 'include/PaginaAgregarBar.dart';
+import 'include/PaginaEditBar.dart';
+import 'include/EntregadoTab.dart';
+import 'include/PendienteTab.dart';
+import 'include/ListoTab.dart';
 
 class Carp1 extends StatefulWidget {
   const Carp1({Key key}) : super(key: key);
