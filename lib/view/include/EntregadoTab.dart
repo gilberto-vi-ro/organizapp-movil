@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
-import 'PaginaAgregarBar.dart';
-import 'PaginaEditBar.dart';
 
-class PendienteTab extends StatefulWidget {
-  const PendienteTab({Key key}) : super(key: key);
+class EntregadoTab extends StatefulWidget {
+  const EntregadoTab({Key key}) : super(key: key);
+
   @override
-  _PendienteTabState createState() => _PendienteTabState();
+  _EntregadoTabState createState() => _EntregadoTabState();
 }
 
-class _PendienteTabState extends State<PendienteTab> {
-  static DateTime selectedDateTomorrow = DateTime.now();
-  //  DateTime answer = selectedDateTomorrow.AddDays(36);
-
-  DateTime selectedDateNow = DateTime.now();
-  // creamos la variable con el que iniciara el DropdownButton
-  // que sera urgente
-  String dropdwoncurrentvalue = "Urgente";
-
+class _EntregadoTabState extends State<EntregadoTab> {
   @override
   Widget build(BuildContext context) {
+    String dropdwoncurrentvalue = "Urgente";
     return Scaffold(
+      // ponemos el Gridview en esta pagina tambien entregado
+      // tabBar--------------------------------------------
       backgroundColor: Color.fromRGBO(232, 245, 251, 1),
       // este appbar sirve para poner nuestra barra de
       // path y el boton------------------------------
@@ -49,31 +43,6 @@ class _PendienteTabState extends State<PendienteTab> {
               'Actividades',
               style:
                   TextStyle(color: Color.fromRGBO(59, 56, 56, 1), fontSize: 18),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () {
-                    _selectDate(selectedDateNow, context);
-                  },
-                ),
-                Text(
-                    "${selectedDateNow.day}/${selectedDateNow.month}/${selectedDateNow.year}"),
-                // -----------------------------------------------
-                // ----------------------------------------------
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () {
-                    _selectDate(selectedDateNow, context);
-                  },
-                ),
-                Text(
-                  "${selectedDateNow.day}/${selectedDateNow.month}/${selectedDateNow.year}",
-                  // textAlign: TextAlign.right,
-                ),
-              ],
             ),
             Container(
               height: 50,
@@ -180,40 +149,4 @@ class _PendienteTabState extends State<PendienteTab> {
       ),
     );
   }
-
-  _selectDate(DateTime selectedDate, BuildContext context) async {
-    final DateTime selected = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(DateTime.now().year - 100),
-        lastDate: DateTime(DateTime.now().year + 1));
-    if (selected != null && selected != selectedDate)
-      setState(() {
-        selectedDate = selected;
-      });
-  }
 }
-
-// clase del dropdown
-// ---------------------------------------------
-// ---------------------------------------------
-
-// body: DropdownButton(
-//   items: <String>['opcion1', 'opcion3', 'opcion3']
-//       .map<DropdownMenuItem<String>>((String value) {
-//     return DropdownMenuItem<String>(
-//       value: value,
-//       child: Text(value),
-//     );
-//   }).toList(),
-//   value: dropdwoncurrentvalue,
-//   icon: Icon(Icons.access_alarm),
-//   iconSize: 15,
-//   elevation: 16,
-//   underline: Container(height: 3, color: Colors.blue),
-//   onChanged: (String valueIn) {
-//     setState(() {
-//       dropdwoncurrentvalue = valueIn;
-//     });
-//   },
-// ),

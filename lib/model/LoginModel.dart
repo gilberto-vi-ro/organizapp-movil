@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-class login {
+class LoginModel {
   String name;
   String url;
   login(name, url) {

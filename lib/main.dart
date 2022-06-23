@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:organizapp/view/actividades.dart';
-import 'package:organizapp/view/actividades.dart';
-import 'package:organizapp/view/carpetas.dart';
-import 'package:organizapp/view/editarPerfil.dart';
-import 'package:organizapp/view/login.dart';
+import 'package:organizapp/view/Actividades.dart';
+import 'package:organizapp/view/Carpetas.dart';
+import 'package:organizapp/view/EditarPerfil.dart';
+import 'package:organizapp/view/Login.dart';
 import 'package:organizapp/view/pruev.dart';
 
 void main() {
@@ -19,12 +18,12 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       routes: {
         'login': (BuildContext context) => Login(),
-        'Actividades': (BuildContext context) => Actividades(),
+        'actividades': (BuildContext context) => Actividades(),
         'editarPerfil': (BuildContext context) => EditarPerfil(),
         'carpetas': (BuildContext context) => Carpetas(),
         'pruev': (BuildContext context) => MyAps(),
       },
-      initialRoute: 'Actividades',
+      initialRoute: 'actividades',
       theme: ThemeData(primaryColor: Color.fromRGBO(41, 141, 122, 1)),
     );
   }
