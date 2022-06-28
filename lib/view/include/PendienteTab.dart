@@ -10,12 +10,13 @@ class PendienteTab extends StatefulWidget {
 
 class _PendienteTabState extends State<PendienteTab> {
   // segundo fecha,sumandole dias a la variable---------
-  static DateTime date = DateTime.now();
-  var newDateTomorro = new DateTime(date.year, date.month, date.day + 10);
-// premer fecha--------------------------
-  DateTime selectedDate = DateTime.now();
+  static DateTime dateNow = DateTime.now();
+  //segunda fecha--------------------------
+  DateTime date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
+  //primer fecha--------------------------
+  DateTime date1 = dateNow;
   // creamos la variable con el que iniciara el DropdownButton
-  // que sera urgente
+  // que sera Urgente
   String dropdwoncurrentvalue = "Urgente";
 
   @override
@@ -57,21 +58,21 @@ class _PendienteTabState extends State<PendienteTab> {
                 IconButton(
                   icon: Icon(Icons.calendar_month),
                   onPressed: () {
-                    _selectDate(context);
+                    _selectDate(date1,"date1",context);
                   },
                 ),
                 Text(
-                    "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                    "${date1.day}/${date1.month}/${date1.year}"),
                 // -----------------------------------------------
                 // ----------------------------------------------
                 IconButton(
                   icon: Icon(Icons.calendar_month),
                   onPressed: () {
-                    _selectDate(context);
+                    _selectDate(date2,"date2",context);
                   },
                 ),
                 Text(
-                  "${newDateTomorro.day}/${newDateTomorro.month}/${newDateTomorro.year}",
+                  "${date2.day}/${date2.month}/${date2.year}",
                   // textAlign: TextAlign.right,
                 ),
               ],
@@ -182,16 +183,19 @@ class _PendienteTabState extends State<PendienteTab> {
     );
   }
 
-  _selectDate(BuildContext context) async {
-    final DateTime selected = await showDatePicker(
+  _selectDate(DateTime selectedDate,String where, BuildContext context) async {
+      DateTime selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
     );
     if (selected != null && selected != selectedDate)
       setState(() {
-        selectedDate = selected;
+        if (where=="date1")
+          date1 = selected;
+        else if (where=="date2")
+          date2 = selected;
       });
   }
 }
