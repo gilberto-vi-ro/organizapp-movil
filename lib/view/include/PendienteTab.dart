@@ -9,11 +9,10 @@ class PendienteTab extends StatefulWidget {
 }
 
 class _PendienteTabState extends State<PendienteTab> {
-  // segundo fecha,sumandole dias a la variable---------
-  static DateTime dateNow = DateTime.now();
-  //segunda fecha--------------------------
-  DateTime date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
   //primer fecha--------------------------
+  static DateTime dateNow = DateTime.now();
+  // segundo fecha,sumandole dias a la variable---------
+  DateTime date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
   DateTime date1 = dateNow;
   // creamos la variable con el que iniciara el DropdownButton
   // que sera Urgente
@@ -58,17 +57,16 @@ class _PendienteTabState extends State<PendienteTab> {
                 IconButton(
                   icon: Icon(Icons.calendar_month),
                   onPressed: () {
-                    _selectDate(date1,"date1",context);
+                    _selectDate(date1, "date1", context);
                   },
                 ),
-                Text(
-                    "${date1.day}/${date1.month}/${date1.year}"),
+                Text("${date1.day}/${date1.month}/${date1.year}"),
                 // -----------------------------------------------
                 // ----------------------------------------------
                 IconButton(
                   icon: Icon(Icons.calendar_month),
                   onPressed: () {
-                    _selectDate(date2,"date2",context);
+                    _selectDate(date2, "date2", context);
                   },
                 ),
                 Text(
@@ -183,8 +181,10 @@ class _PendienteTabState extends State<PendienteTab> {
     );
   }
 
-  _selectDate(DateTime selectedDate,String where, BuildContext context) async {
-      DateTime selected = await showDatePicker(
+// ------------------------------------------------
+// realizamos el metodo para seleccionar feccha
+  _selectDate(DateTime selectedDate, String where, BuildContext context) async {
+    DateTime selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2020),
@@ -192,34 +192,9 @@ class _PendienteTabState extends State<PendienteTab> {
     );
     if (selected != null && selected != selectedDate)
       setState(() {
-        if (where=="date1")
+        if (where == "date1")
           date1 = selected;
-        else if (where=="date2")
-          date2 = selected;
+        else if (where == "date2") date2 = selected;
       });
   }
 }
-
-// clase del dropdown
-// ---------------------------------------------
-// ---------------------------------------------
-
-// body: DropdownButton(
-//   items: <String>['opcion1', 'opcion3', 'opcion3']
-//       .map<DropdownMenuItem<String>>((String value) {
-//     return DropdownMenuItem<String>(
-//       value: value,
-//       child: Text(value),
-//     );
-//   }).toList(),
-//   value: dropdwoncurrentvalue,
-//   icon: Icon(Icons.access_alarm),
-//   iconSize: 15,
-//   elevation: 16,
-//   underline: Container(height: 3, color: Colors.blue),
-//   onChanged: (String valueIn) {
-//     setState(() {
-//       dropdwoncurrentvalue = valueIn;
-//     });
-//   },
-// ),

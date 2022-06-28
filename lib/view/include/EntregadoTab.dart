@@ -9,6 +9,16 @@ class EntregadoTab extends StatefulWidget {
 
 class _EntregadoTabState extends State<EntregadoTab> {
   @override
+  // ------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------
+  //primer fecha--------------------------
+  static DateTime dateNow = DateTime.now();
+  // segundo fecha,sumandole dias a la variable---------
+  DateTime date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
+  DateTime date1 = dateNow;
+
+// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
   Widget build(BuildContext context) {
     String dropdwoncurrentvalue = "Urgente";
     return Scaffold(
@@ -43,6 +53,30 @@ class _EntregadoTabState extends State<EntregadoTab> {
               'Actividades',
               style:
                   TextStyle(color: Color.fromRGBO(59, 56, 56, 1), fontSize: 18),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () {
+                    _selectDate(date1, "date1", context);
+                  },
+                ),
+                Text("${date1.day}/${date1.month}/${date1.year}"),
+                // -----------------------------------------------
+                // ----------------------------------------------
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () {
+                    _selectDate(date2, "date2", context);
+                  },
+                ),
+                Text(
+                  "${date2.day}/${date2.month}/${date2.year}",
+                  // textAlign: TextAlign.right,
+                ),
+              ],
             ),
             Container(
               height: 50,
@@ -148,5 +182,22 @@ class _EntregadoTabState extends State<EntregadoTab> {
         ),
       ),
     );
+  }
+
+  // / / -----------------------------------------------------------------------------
+  // realizamos el metodo para seleccionar feccha
+  _selectDate(DateTime selectedDate, String where, BuildContext context) async {
+    DateTime selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (selected != null && selected != selectedDate)
+      setState(() {
+        if (where == "date1")
+          date1 = selected;
+        else if (where == "date2") date2 = selected;
+      });
   }
 }
