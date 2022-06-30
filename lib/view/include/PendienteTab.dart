@@ -9,6 +9,11 @@ class PendienteTab extends StatefulWidget {
 }
 
 class _PendienteTabState extends State<PendienteTab> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   //primer fecha--------------------------
   static DateTime dateNow = DateTime.now();
   // segundo fecha,sumandole dias a la variable---------
@@ -181,7 +186,7 @@ class _PendienteTabState extends State<PendienteTab> {
     );
   }
 
-// ------------------------------------------------
+// -----------------------------------------------------------------------------
 // realizamos el metodo para seleccionar feccha
   _selectDate(DateTime selectedDate, String where, BuildContext context) async {
     DateTime selected = await showDatePicker(

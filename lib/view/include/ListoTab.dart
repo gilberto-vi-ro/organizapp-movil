@@ -273,7 +273,7 @@ class _ListoTabState extends State<ListoTab> {
     );
   }
 
-  // / -----------------------------------------------------------------------------
+// / -----------------------------------------------------------------------------
 // realizamos el metodo para seleccionar feccha
   _selectDate(DateTime selectedDate, String where, BuildContext context) async {
     DateTime selected = await showDatePicker(
