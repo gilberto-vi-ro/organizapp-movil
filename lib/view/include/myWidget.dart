@@ -86,13 +86,15 @@ Widget myShowDialog(msgTitle, msgContent, BuildContext context) {
   showDialog(
       context: context,
       builder: (BuildContext buildcontext) {
+        //dialogContext = buildcontext;
         return AlertDialog(
           backgroundColor: Color.fromRGBO(232, 245, 251, 1),
           title: Text(
             msgTitle,
             style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
           ),
-          content: Text(msgContent, style: TextStyle(color: Colors.red)),
+          content: Text(msgContent,
+              style: TextStyle(color: Color.fromRGBO(205, 92, 92, 1))),
           actions: <Widget>[
             RaisedButton(
               color: Color.fromRGBO(41, 141, 122, 1),
@@ -101,7 +103,8 @@ Widget myShowDialog(msgTitle, msgContent, BuildContext context) {
                 style: TextStyle(color: Color.fromRGBO(232, 245, 251, 1)),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                Navigator.pop(buildcontext);
               },
             )
           ],

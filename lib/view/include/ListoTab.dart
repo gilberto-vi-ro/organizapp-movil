@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organizapp/model/ActividadMoldel.dart';
 import 'package:organizapp/provider/ActividadProvider.dart';
+import 'myWidget.dart';
 
 class ListoTab extends StatefulWidget {
   //propiedad
@@ -23,6 +24,10 @@ class ListoTabState extends State<ListoTab> {
   /*------------------------------------------------------------------------------
   Property
   --------------------------------------------------------------------------------*/
+  bool checkBoxValue = false;
+  List<int> listCheck = new List();
+  bool visibilityCheckbox = false;
+  DateTime dateTomorrow;
   DateTime date1;
   DateTime date2;
   bool _isVisible = true;
@@ -36,6 +41,8 @@ class ListoTabState extends State<ListoTab> {
   Constraint
   --------------------------------------------------------------------------------*/
   ListoTabState() {
+    // Fecha de manana
+    dateTomorrow = new DateTime(dateNow.year, dateNow.month, dateNow.day + 2);
     // Segunda fecha, restandole dias a la variable
     date1 = new DateTime(dateNow.year, dateNow.month, dateNow.day - 15);
     // Segunda fecha, sumandole dias a la variable
@@ -199,7 +206,8 @@ class ListoTabState extends State<ListoTab> {
               //   crossAxisCount: 2,
             ),
             itemCount: snapshot.data.length,
-            itemBuilder: (context, i) => _crearItem(snapshot.data[i], context),
+            itemBuilder: (context, i) =>
+                _crearItem(snapshot.data[i], context, i),
           );
         } else if (snapshot.connectionState == ConnectionState.done) {
           var message = ActividadProvider.msgText;
@@ -214,30 +222,77 @@ class ListoTabState extends State<ListoTab> {
     );
   }
 
-  Widget _crearItem(ActividadModel actividad, BuildContext context) {
-    Icon myIcon = Icon(
-      Icons.local_activity,
-    );
+  Widget _crearItem(ActividadModel actividad, BuildContext context, int i) {
+    Image myIcon = Image.asset('assets/task.png', height: 80.0);
+    Color txtColor = Color.fromRGBO(59, 56, 56, 1);
+    DateTime activityDeliveryDate =
+        DateTime.parse(actividad.tarea_fecha_entrega);
+    if (activityDeliveryDate.compareTo(dateTomorrow) < 0)
+      txtColor = Color.fromRGBO(205, 92, 92, 1);
 
-    return Card(
+    if (listCheck.indexOf(i) == -1) {
+      // si  no esta en la lista
+      checkBoxValue = false;
+    } else {
+      // si esta en la lista
+      checkBoxValue = true;
+    }
+
+    // retornando el card(contenndores del GridView)
+    // ------------------------------------------------
+    return GestureDetector(
+      onLongPress: () {
+        myShowDialog("long press", "", context);
+      },
+      onTap: () {
+        visibilityCheckbox = true;
+        setState(() {
+          if (listCheck.contains(i)) {
+            listCheck.remove(i);
+          } else {
+            listCheck.add(i); // agregamos el indice a la list
+          }
+          if (listCheck.length == 0) visibilityCheckbox = false;
+        });
+      },
+      child: Card(
+        key: Key("${actividad.id_tarea}"),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         color: Color.fromRGBO(219, 220, 222, 1),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-                child: IconButton(
-              alignment: Alignment.center,
-              color: Color.fromRGBO(59, 134, 232, 1),
-              iconSize: 80,
-              onPressed: () {},
-              icon: myIcon,
-            )),
-            Text(
-              actividad.tarea_nombre,
+        child: Stack(
+          //position absolute
+          fit: StackFit.expand,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          children: [
+            Positioned(
+              child: Container(
+                  child: Text(actividad.tarea_fecha_entrega,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(color: txtColor))),
+              top: 10.0,
+              right: 14.0,
+            ),
+            Center(child: myIcon),
+            Center(
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(5, 130, 5, 5),
+                    child: Text(actividad.tarea_nombre,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(color: txtColor)))),
+            Positioned(
+              child: Container(
+                  color: Color.fromRGBO(219, 220, 222, 1),
+                  child: myVisibilityCheckbox(visibilityCheckbox)),
+              right: 5.0,
+              top: 1.0,
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   myAlertDialog(msgTitle, msgContent, BuildContext context) {
@@ -249,7 +304,8 @@ class ListoTabState extends State<ListoTab> {
           msgTitle,
           style: TextStyle(color: Color.fromRGBO(41, 141, 122, 1)),
         ),
-        content: Text(msgContent, style: TextStyle(color: Colors.red)),
+        content: Text(msgContent,
+            style: TextStyle(color: Color.fromRGBO(205, 92, 92, 1))),
         actions: <Widget>[
           RaisedButton(
             color: Color.fromRGBO(41, 141, 122, 1),
@@ -273,6 +329,21 @@ class ListoTabState extends State<ListoTab> {
         ],
       ),
     );
+  }
+
+  Widget myVisibilityCheckbox(bool visibilityCheckbox) {
+    if (visibilityCheckbox) {
+      return Checkbox(
+          activeColor: Color.fromRGBO(41, 141, 122, 1),
+          value: checkBoxValue,
+          onChanged: (bool newValue) {
+            //checkBoxValue = newValue;
+            //listCheck.add(i);
+            //checkBoxValue = false;
+          });
+    } else {
+      return SizedBox.shrink();
+    }
   }
 
   //-----------------------------------------------------------------------------

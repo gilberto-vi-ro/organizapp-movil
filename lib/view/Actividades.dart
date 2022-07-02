@@ -13,27 +13,59 @@ class Actividades extends StatefulWidget {
   ActividadesState createState() => ActividadesState();
 }
 
-class ActividadesState extends State<Actividades> {
-  //property
+class ActividadesState extends State<Actividades>
+    with SingleTickerProviderStateMixin {
+  /*------------------------------------------------------------------------------
+  Property
+  --------------------------------------------------------------------------------*/
   int _paginaActual = 0;
   //List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
   Icon customIcon = Icon(Icons.search);
   Widget customSearchBar = Text('OrganizApp');
 
+  TabController _tabController;
+  final List<Widget> myTabs = <Widget>[
+    Tab(
+      text: "Pendiente",
+    ),
+    Tab(
+      text: "Listo",
+    ),
+    Tab(
+      text: "Entregado",
+    )
+  ];
+  /*------------------------------------------------------------------------------
+  initState
+  --------------------------------------------------------------------------------*/
   @override
   void initState() {
     super.initState();
+    _tabController =
+        new TabController(initialIndex: 0, vsync: this, length: myTabs.length);
   }
 
+  /*------------------------------------------------------------------------------
+  dispose
+  --------------------------------------------------------------------------------*/
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  /*------------------------------------------------------------------------------*/
   @override
   Widget build(BuildContext context) {
     // return DefaultTabController(length: 3, child: Scaffold(appBar: AppBar(
     //   title: O,
     // ),))
     // controlador de los tabs
+
+    print(_tabController.index);
     // --------------------------------------------
     final myTabController = new DefaultTabController(
-        length: 3,
+        length: myTabs.length,
         child: Scaffold(
           // comienza en menu amburgesa (drawer)
           // ----------------------------------------------
@@ -114,27 +146,17 @@ class ActividadesState extends State<Actividades> {
           color: Color.fromRGBO(219, 220, 222, 1), // Tab Bar color change
           child: TabBar(
             // TabBar
-            //controller: tabController,
+            controller: _tabController,
             unselectedLabelColor: Color.fromRGBO(59, 56, 56, 1),
             labelColor: Color.fromRGBO(41, 141, 122, 1),
             indicatorWeight: 4,
             indicatorColor: Color.fromRGBO(41, 141, 122, 1),
-            tabs: <Widget>[
-              Tab(
-                text: "Pendiente",
-              ),
-              Tab(
-                text: "Listo",
-              ),
-              Tab(
-                text: "Entregado",
-              )
-            ],
+            tabs: myTabs,
           ),
         ),
         Expanded(
           child: TabBarView(
-            //controller: tabController,
+            controller: _tabController,
             children: <Widget>[
               new PendienteTab(),
               new ListoTab(),
