@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:organizapp/model/ActividadMoldel.dart';
 import 'package:organizapp/provider/ActividadProvider.dart';
 
-import '../Actividades.dart';
-
 class ListoTab extends StatefulWidget {
   //propiedad
   //String search = "hola mundo";
@@ -13,29 +11,42 @@ class ListoTab extends StatefulWidget {
   //ListoTab(this.search);
 
   @override
-  _ListoTabState createState() => _ListoTabState();
+  ListoTabState createState() => ListoTabState();
 }
 
-class _ListoTabState extends State<ListoTab> {
-  // ------------------------------------------------------------------------------
-  // ------------------------------------------------------------------------------
-  //primer fecha--------------------------
+class ListoTabState extends State<ListoTab> {
+  /*------------------------------------------------------------------------------
+  Static property
+  --------------------------------------------------------------------------------*/
+  static String mySearch = "";
   static DateTime dateNow = DateTime.now();
-  // segundo fecha,sumandole dias a la variable---------
-  DateTime date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
-  DateTime date1 = dateNow;
-
-// --------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------
-  //property
+  /*------------------------------------------------------------------------------
+  Property
+  --------------------------------------------------------------------------------*/
+  DateTime date1;
+  DateTime date2;
   bool _isVisible = true;
   String dropdwoncurrentvalue = "All";
   String id_user = "1002",
-      path = "drive/1002",
+      path = "drive/",
       priority = "",
-      search = "",
+      search,
       range = "2020-02-15::2023-05-15";
-
+  /*------------------------------------------------------------------------------
+  Constraint
+  --------------------------------------------------------------------------------*/
+  ListoTabState() {
+    // Segunda fecha, restandole dias a la variable
+    date1 = new DateTime(dateNow.year, dateNow.month, dateNow.day - 15);
+    // Segunda fecha, sumandole dias a la variable
+    date2 = new DateTime(dateNow.year, dateNow.month, dateNow.day + 15);
+    // Estableciendo el path de las actividaes
+    path = "drive/" + id_user;
+    // Estableciendo el rango de fecha de las actividades
+    range =
+        "${date1.year}-${date1.month}-${date1.day}::${date2.year}-${date2.month}-${date2.day}";
+  }
+  /*------------------------------------------------------------------------------*/
   @override
   void initState() {
     super.initState();
@@ -43,19 +54,16 @@ class _ListoTabState extends State<ListoTab> {
 
   @override
   Widget build(BuildContext context) {
-    // creamos la variable con el que iniciara el DropdownButton
-    // que sera urgente
-
-    search = ActividadesState.mySearch;
-    print(ActividadesState.mySearch);
-    setState(() {});
+    if (search != mySearch) {
+      search = mySearch;
+      //print(mySearch);
+      setState(() {});
+    }
 
     return Scaffold(
-      //en esta parte se acran los GridVio y contenedores
-      // ------------------------------------------------------
+      //En esta parte se acran los GridVio y contenedores
       backgroundColor: Color.fromRGBO(232, 245, 251, 1),
-      // este appbar sirve para poner nuestra barra de
-      // path y el boton------------------------------
+      // Este appbar sirve para poner nuestra barra de path y el boton
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Color.fromRGBO(232, 245, 251, 1),
@@ -66,15 +74,12 @@ class _ListoTabState extends State<ListoTab> {
             ),
             onPressed: () {}),
         title: Text(
-          "Carpeta1/Carpeta2/carpeta3",
+          path,
           style:
               TextStyle(fontSize: 15, color: Color.fromRGBO(41, 141, 122, 1)),
         ),
       ),
-      // hacemos el Gridviw  en esta parte de inicion tab
-      // que es el pendiente tab
-      // ------------------------------------------
-
+      // hacemos el Gridviw  en esta parte de inicion tab que es el pendiente tab
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -106,6 +111,7 @@ class _ListoTabState extends State<ListoTab> {
                 ),
                 onChanged: (String valueIn) {
                   setState(() {
+                    dropdwoncurrentvalue = valueIn;
                     switch (dropdwoncurrentvalue) {
                       case "All":
                         {
@@ -135,8 +141,6 @@ class _ListoTabState extends State<ListoTab> {
                         }
                         break;
                     }
-
-                    dropdwoncurrentvalue = valueIn;
                   });
                 },
               ),
@@ -151,8 +155,6 @@ class _ListoTabState extends State<ListoTab> {
                   },
                 ),
                 Text("${date1.day}/${date1.month}/${date1.year}"),
-                // -----------------------------------------------
-                // ----------------------------------------------
                 IconButton(
                   icon: Icon(Icons.calendar_month),
                   onPressed: () {
@@ -273,8 +275,8 @@ class _ListoTabState extends State<ListoTab> {
     );
   }
 
-// / -----------------------------------------------------------------------------
-// realizamos el metodo para seleccionar feccha
+  //-----------------------------------------------------------------------------
+  // Metodo para seleccionar feccha
   _selectDate(DateTime selectedDate, String where, BuildContext context) async {
     DateTime selected = await showDatePicker(
       context: context,
@@ -287,6 +289,9 @@ class _ListoTabState extends State<ListoTab> {
         if (where == "date1")
           date1 = selected;
         else if (where == "date2") date2 = selected;
+
+        range =
+            "${date1.year}-${date1.month}-${date1.day}::${date2.year}-${date2.month}-${date2.day}";
       });
   }
 }
