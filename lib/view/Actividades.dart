@@ -14,9 +14,6 @@ class Actividades extends StatefulWidget {
 }
 
 class ActividadesState extends State<Actividades> {
-  //property statics
-  static String mySearch = "";
-
   //property
   int _paginaActual = 0;
   //List<Widget> _paginas = [PaginaAgregarBar(), PaginaEditBar()];
@@ -78,7 +75,7 @@ class ActividadesState extends State<Actividades> {
                     title: TextField(
                       onChanged: (value) {
                         setState(() {
-                          mySearch = value.toString();
+                          ListoTabState.mySearch = value.toString();
                         });
                       },
                       decoration: InputDecoration(
@@ -99,7 +96,7 @@ class ActividadesState extends State<Actividades> {
               } else {
                 customIcon = Icon(Icons.search);
                 customSearchBar = Text('OrganizApp');
-                mySearch = "";
+                ListoTabState.mySearch = "";
               }
             });
           },
