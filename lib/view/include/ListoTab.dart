@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; //para usar DateFormat // https://medium.com/flutter-community/working-with-dates-in-dart-e81c70911811
 import 'package:organizapp/model/ActividadMoldel.dart';
 import 'package:organizapp/provider/ActividadProvider.dart';
 import 'myWidget.dart';
@@ -25,7 +26,8 @@ class ListoTabState extends State<ListoTab> {
   Property
   --------------------------------------------------------------------------------*/
   bool checkBoxValue = false;
-  List<int> listCheck = new List();
+  List<ActividadModel> listCheck =
+      new List(); //lista de actividades e instancear en  parent para obtner los selected items
   bool visibilityCheckbox = false;
   DateTime dateTomorrow;
   DateTime date1;
@@ -36,13 +38,16 @@ class ListoTabState extends State<ListoTab> {
       path = "drive/",
       priority = "",
       search,
-      range = "2020-02-15::2023-05-15";
+      range = "2020-02-15::2023-05-15",
+      link =
+          "https://myproyecto.com/organizapp-api/HomeController/listTaskDone/";
   /*------------------------------------------------------------------------------
   Constraint
   --------------------------------------------------------------------------------*/
   ListoTabState() {
+    //id_user = id_user_global,
     // Fecha de manana
-    dateTomorrow = new DateTime(dateNow.year, dateNow.month, dateNow.day + 2);
+    dateTomorrow = new DateTime(dateNow.year, dateNow.month, dateNow.day + 1);
     // Segunda fecha, restandole dias a la variable
     date1 = new DateTime(dateNow.year, dateNow.month, dateNow.day - 15);
     // Segunda fecha, sumandole dias a la variable
@@ -187,7 +192,7 @@ class ListoTabState extends State<ListoTab> {
   FutureBuilder _listWidgetActividad() {
     return FutureBuilder(
       future: ActividadProvider.cargarActividad(
-          id_user, path, priority, search, range),
+          id_user, path, priority, search, range, link),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return GridView.builder(
@@ -225,18 +230,36 @@ class ListoTabState extends State<ListoTab> {
   Widget _crearItem(ActividadModel actividad, BuildContext context, int i) {
     Image myIcon = Image.asset('assets/task.png', height: 80.0);
     Color txtColor = Color.fromRGBO(59, 56, 56, 1);
-    DateTime activityDeliveryDate =
-        DateTime.parse(actividad.tarea_fecha_entrega);
-    if (activityDeliveryDate.compareTo(dateTomorrow) < 0)
-      txtColor = Color.fromRGBO(205, 92, 92, 1);
+    DateTime activityDeliveryDate = actividad.tarea_fecha_entrega;
 
-    if (listCheck.indexOf(i) == -1) {
+    if (DateFormat("yyyy-MM-dd")
+            .format(activityDeliveryDate)
+            .compareTo(DateFormat("yyyy-MM-dd").format(dateTomorrow)) <=
+        0) {
+      txtColor = Color.fromRGBO(205, 92, 92, 1);
+    }
+
+    ActividadModel removeActividad;
+    int existsInListCheck = listCheck.indexWhere((objectActividad) {
+      removeActividad = objectActividad;
+      return objectActividad.id_tarea == actividad.id_tarea;
+    });
+
+    // removeActividad.id_tarea;
+    if (existsInListCheck == -1)
       // si  no esta en la lista
       checkBoxValue = false;
-    } else {
+    else
       // si esta en la lista
       checkBoxValue = true;
-    }
+
+    // if (listCheck.indexOf(i) == -1) {
+    //   // si  no esta en la lista
+    //   checkBoxValue = false;
+    // } else {
+    //   // si esta en la lista
+    //   checkBoxValue = true;
+    // }
 
     // retornando el card(contenndores del GridView)
     // ------------------------------------------------
@@ -247,10 +270,10 @@ class ListoTabState extends State<ListoTab> {
       onTap: () {
         visibilityCheckbox = true;
         setState(() {
-          if (listCheck.contains(i)) {
-            listCheck.remove(i);
+          if (existsInListCheck == -1) {
+            listCheck.add(actividad);
           } else {
-            listCheck.add(i); // agregamos el indice a la list
+            listCheck.remove(removeActividad);
           }
           if (listCheck.length == 0) visibilityCheckbox = false;
         });
@@ -262,17 +285,26 @@ class ListoTabState extends State<ListoTab> {
         color: Color.fromRGBO(219, 220, 222, 1),
         child: Stack(
           //position absolute
+          alignment: Alignment.center,
           fit: StackFit.expand,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           children: [
             Positioned(
               child: Container(
-                  child: Text(actividad.tarea_fecha_entrega,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(color: txtColor))),
+                width: 100,
+                alignment: Alignment.center,
+                child: Text(
+                  DateFormat.yMEd()
+                      .add_jms()
+                      .format(actividad.tarea_fecha_entrega),
+                  // DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
+                  //     "${actividad.tarea_fecha_entrega.hour}:${actividad.tarea_fecha_entrega.minute}:${actividad.tarea_fecha_entrega.second}")),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  style: TextStyle(color: txtColor),
+                ),
+              ),
               top: 10.0,
-              right: 14.0,
             ),
             Center(child: myIcon),
             Center(

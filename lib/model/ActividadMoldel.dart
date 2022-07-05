@@ -15,7 +15,7 @@ class ActividadModel {
   String archivo_archivado;
   int archivo_size;
   String tarea_nombre;
-  String tarea_fecha_entrega;
+  DateTime tarea_fecha_entrega;
   int tarea_estado;
   String tarea_descripcion;
   int tarea_prioridad;
@@ -52,7 +52,7 @@ class ActividadModel {
       archivo_archivado: json["archivo_archivado"],
       archivo_size: int.parse(json["archivo_size"]),
       tarea_nombre: json["tarea_nombre"],
-      tarea_fecha_entrega: json["tarea_fecha_entrega"],
+      tarea_fecha_entrega: DateTime.parse(json["tarea_fecha_entrega"]),
       tarea_estado: int.parse(json["tarea_estado"]),
       tarea_descripcion: json["tarea_descripcion"],
       tarea_prioridad: int.parse(json["tarea_prioridad"]),

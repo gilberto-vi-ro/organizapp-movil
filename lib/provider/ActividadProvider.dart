@@ -9,13 +9,12 @@ class ActividadProvider {
   // 'https://myesp8266-integradora-5bd80-default-rtdb.firebaseio.com/';
 
   static Future<List<ActividadModel>> cargarActividad(
-      idUser, path, priority, search, range) async {
+      idUser, path, priority, search, range, link) async {
     try {
       // final urlConexion = '$_urlDB/alumnos.json';
       // final resp = await http.get(urlConexion);
       final response = await http.post(
-        Uri.parse(
-            "https://myproyecto.com/organizapp-api/HomeController/listTaskDone/"),
+        Uri.parse(link),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
