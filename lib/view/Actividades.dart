@@ -107,7 +107,9 @@ class ActividadesState extends State<Actividades>
                     title: TextField(
                       onChanged: (value) {
                         setState(() {
+                          PendienteTabState.mySearch = value.toString();
                           ListoTabState.mySearch = value.toString();
+                          EntregadoTabState.mySearch = value.toString();
                         });
                       },
                       decoration: InputDecoration(
@@ -128,7 +130,10 @@ class ActividadesState extends State<Actividades>
               } else {
                 customIcon = Icon(Icons.search);
                 customSearchBar = Text('OrganizApp');
+
+                PendienteTabState.mySearch = "";
                 ListoTabState.mySearch = "";
+                EntregadoTabState.mySearch = "";
               }
             });
           },

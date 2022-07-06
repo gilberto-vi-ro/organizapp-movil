@@ -100,6 +100,28 @@ class ListoTabState extends State<ListoTab> {
               style:
                   TextStyle(color: Color.fromRGBO(59, 56, 56, 1), fontSize: 18),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () {
+                    _selectDate(date1, "date1", context);
+                  },
+                ),
+                Text("${date1.day}/${date1.month}/${date1.year}"),
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () {
+                    _selectDate(date2, "date2", context);
+                  },
+                ),
+                Text(
+                  "${date2.day}/${date2.month}/${date2.year}",
+                  // textAlign: TextAlign.right,
+                ),
+              ],
+            ),
             Container(
               height: 50,
               child: DropdownButton(
@@ -156,28 +178,6 @@ class ListoTabState extends State<ListoTab> {
                   });
                 },
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () {
-                    _selectDate(date1, "date1", context);
-                  },
-                ),
-                Text("${date1.day}/${date1.month}/${date1.year}"),
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () {
-                    _selectDate(date2, "date2", context);
-                  },
-                ),
-                Text(
-                  "${date2.day}/${date2.month}/${date2.year}",
-                  // textAlign: TextAlign.right,
-                ),
-              ],
             ),
             Container(
               height: 400,
@@ -239,13 +239,13 @@ class ListoTabState extends State<ListoTab> {
       txtColor = Color.fromRGBO(205, 92, 92, 1);
     }
 
-    ActividadModel removeActividad;
+    ActividadModel selectedActividad;
     int existsInListCheck = listCheck.indexWhere((objectActividad) {
-      removeActividad = objectActividad;
+      selectedActividad = objectActividad;
       return objectActividad.id_tarea == actividad.id_tarea;
     });
 
-    // removeActividad.id_tarea;
+    // selectedActividad.id_tarea;
     if (existsInListCheck == -1)
       // si  no esta en la lista
       checkBoxValue = false;
@@ -273,7 +273,7 @@ class ListoTabState extends State<ListoTab> {
           if (existsInListCheck == -1) {
             listCheck.add(actividad);
           } else {
-            listCheck.remove(removeActividad);
+            listCheck.remove(selectedActividad);
           }
           if (listCheck.length == 0) visibilityCheckbox = false;
         });
