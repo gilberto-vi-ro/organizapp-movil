@@ -146,6 +146,7 @@ class ListoTabState extends State<ListoTab> {
                 onChanged: (String valueIn) {
                   setState(() {
                     dropdwoncurrentvalue = valueIn;
+                    //print(dropdwoncurrentvalue);
                     switch (dropdwoncurrentvalue) {
                       case "All":
                         {
@@ -265,7 +266,8 @@ class ListoTabState extends State<ListoTab> {
     // ------------------------------------------------
     return GestureDetector(
       onLongPress: () {
-        myShowDialog("long press", "", context);
+        //myShowDialog("long press", "", context);
+        showModalDialog(actividad, context);
       },
       onTap: () {
         visibilityCheckbox = true;
@@ -396,5 +398,161 @@ class ListoTabState extends State<ListoTab> {
         range =
             "${date1.year}-${date1.month}-${date1.day}::${date2.year}-${date2.month}-${date2.day}";
       });
+  }
+
+  showModalDialog(ActividadModel actividad, context) {
+    final _formKey = GlobalKey<FormState>();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 400),
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: SingleChildScrollView(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 5, left: 10),
+                            child: Text(
+                              "Informacion",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color.fromRGBO(59, 56, 56, 1)),
+                            ),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 5, right: 5),
+                              child: FlatButton(
+                                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Cerrar",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(205, 92, 92, 1),
+                                  ),
+                                ),
+                              ))
+                        ]),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: new EdgeInsetsDirectional.only(
+                                start: 1.0, end: 1.0),
+                            height: 3.0,
+                            color: Color.fromRGBO(219, 220, 222, 1),
+                          ),
+                          labelShowModal("Nombre"),
+                          inputShowModal(actividad.tarea_nombre),
+                          labelShowModal("Fecha entrega"),
+                          inputShowModal(DateFormat.yMEd()
+                              .add_jms()
+                              .format(actividad.tarea_fecha_entrega)),
+                          labelShowModal("Estado"),
+                          inputShowModal(actividad.tarea_estado == 1
+                              ? "Pendiente"
+                              : actividad.tarea_estado == 2
+                                  ? "Listo"
+                                  : "Entergado"),
+                          labelShowModal("Descripcion"),
+                          inputShowModal(actividad.tarea_descripcion),
+                          labelShowModal("Prioridad"),
+                          inputShowModal(actividad.tarea_prioridad == 1
+                              ? "Urgente"
+                              : actividad.tarea_prioridad == 2
+                                  ? "Importante"
+                                  : "No Urgente"),
+                          Container(
+                            margin: new EdgeInsetsDirectional.only(
+                                start: 1.0, end: 1.0),
+                            height: 3.0,
+                            color: Color.fromRGBO(219, 220, 222, 1),
+                          ),
+                          labelShowModal("Archivo"),
+                          inputShowModal(actividad.archivo_nombre),
+                          labelShowModal("Path"),
+                          inputShowModal(actividad.carpeta_path),
+                          Container(
+                            margin: new EdgeInsetsDirectional.only(
+                                start: 1.0, end: 1.0),
+                            height: 3.0,
+                            color: Color.fromRGBO(219, 220, 222, 1),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget labelShowModal(String valueLabel) {
+    return Padding(
+      padding: EdgeInsets.only(top: 20.0, bottom: 1.0),
+      child: Center(
+          child: Text(
+        valueLabel,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: 18, height: 0.6, color: Color.fromRGBO(41, 141, 122, 1)),
+      )),
+    );
+  }
+
+  Widget inputShowModal(String valueInput) {
+    return TextFormField(
+      textAlign: TextAlign.center,
+      enabled: false,
+      initialValue: valueInput,
+      maxLines: 4,
+      minLines: 1,
+      decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(width: 2, color: Colors.transparent),
+        ),
+        // focusedBorder: UnderlineInputBorder(
+        //   borderSide: BorderSide(color: Colors.green),
+        // ),
+      ),
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter some text';
+      //   }
+      // },
+    );
+    // Padding(
+    //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+    //   child: RaisedButton(
+    //     onPressed: () {
+    //       // devolverá true si el formulario es válido, o falso si
+    //       // el formulario no es válido.
+    //       if (_formKey.currentState.validate()) {
+    //         // Si el formulario es válido, queremos mostrar un Snackbar
+
+    //       }
+    //     },
+    //     child: Text('Submit'),
+    //   ),
+    // ),
   }
 }

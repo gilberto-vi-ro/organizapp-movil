@@ -62,7 +62,7 @@ class ActividadesState extends State<Actividades>
     // ),))
     // controlador de los tabs
 
-    print(_tabController.index);
+    //print(_tabController.index);
     // --------------------------------------------
     final myTabController = new DefaultTabController(
         length: myTabs.length,
